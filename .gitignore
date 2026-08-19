@@ -1,0 +1,12 @@
+# Herramientas locales
+.claude/
+
+# Archivos temporales de Office / Windows
+~$*
+Thumbs.db
+desktop.ini
+*.tmp
+
+# Fuentes originales pesadas: el deck usa las versiones optimizadas de assets/
+imagenes/
+logos/

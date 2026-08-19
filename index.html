@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Padrino · Kay Adams — Publicidad 2</title>
+<meta name="description" content="Ejercicio El Padrino — Kay Adams. Publicidad 2, Politécnico Grancolombiano.">
+<meta name="author" content="Mariana Pinzón, Mariana Silva, William Fonseca">
+<meta name="theme-color" content="#050403">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050403'/%3E%3Cpath d='M6 9h20M16 9v16' stroke='%23c9a24a' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   EJERCICIO EL PADRINO · KAY ADAMS
+   Publicidad 2 — Politécnico Grancolombiano
+   6 láminas · 16:9 · contenido literal del Excel
+   Paleta del póster de El Padrino (1972):
+   negro cálido · sepia · bronce · oro antiguo · crema · rojo sangre
+   ============================================================ */
+
+:root{
+  --noir:#050403;
+  --ink:#0b0806;
+
+  --sepia:#4a3418;
+  --bronze:#7c5c2e;
+  --gold:#c9a24a;
+  --gold-2:#e0be71;
+  --gold-hi:#fbf3dd;
+
+  --copper:#c4502f;
+  --copper-2:#e08a63;
+  --copper-hi:#f4cdb8;
+
+  --cream:#f4ecda;
+  --text:#e2d7c0;
+  --dim:#ab9a80;
+  --dim-2:#7e6e54;
+
+  --f-disp:'Cinzel', Georgia, 'Times New Roman', serif;
+  --f-serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --f-ui:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --ease:cubic-bezier(.16,.84,.24,1);
+  --k:1;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
+  overflow:hidden; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+
+/* ---------- ESCENARIO 16:9 ---------- */
+.viewport{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(120% 90% at 50% 0%, #16110b 0%, #080605 55%, #000 100%)}
+.stage{position:relative; width:1600px; height:900px; flex:0 0 auto;
+  transform:scale(var(--k)); transform-origin:center center;
+  background:
+    radial-gradient(115% 80% at 78% -12%, rgba(124,92,46,.30) 0%, transparent 58%),
+    radial-gradient(90% 70% at 8% 108%, rgba(74,52,24,.26) 0%, transparent 60%),
+    linear-gradient(168deg, #100c08 0%, var(--noir) 52%, #030202 100%);
+  overflow:hidden;
+  box-shadow:0 40px 120px -20px rgba(0,0,0,.9), 0 0 0 1px rgba(201,162,74,.08)}
+.stage::after{content:''; position:absolute; inset:0; z-index:60; pointer-events:none;
+  background:radial-gradient(140% 120% at 50% 40%, transparent 48%, rgba(0,0,0,.36) 84%, rgba(0,0,0,.66) 100%)}
+.grain{position:absolute; inset:-60px; z-index:61; pointer-events:none;
+  opacity:.05; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 900ms steps(3,end) infinite}
+@keyframes grain{0%{transform:translate(0,0)}33%{transform:translate(-22px,14px)}
+  66%{transform:translate(16px,-18px)}100%{transform:translate(0,0)}}
+
+/* ---------- LÁMINAS ---------- */
+.slide{position:absolute; inset:0; z-index:2; opacity:0; visibility:hidden;
+  transition:opacity .6s var(--ease), visibility .6s; display:flex; flex-direction:column}
+.slide.is-active{opacity:1; visibility:visible; z-index:5}
+.wm{position:absolute; z-index:1; pointer-events:none; user-select:none;
+  font-family:var(--f-disp); font-weight:900; font-size:520px; line-height:.7;
+  color:rgba(201,162,74,.028); letter-spacing:-.05em}
+
+/* ---------- MOTION ---------- */
+[data-anim]{opacity:0;
+  transition:opacity .8s var(--ease), transform .85s var(--ease), clip-path 1s var(--ease);
+  transition-delay:var(--d,0s)}
+[data-anim="up"]{transform:translateY(28px)}
+[data-anim="down"]{transform:translateY(-22px)}
+[data-anim="left"]{transform:translateX(34px)}
+[data-anim="right"]{transform:translateX(-34px)}
+[data-anim="scale"]{transform:scale(.93)}
+[data-anim="rise"]{transform:translateY(48px) scale(.99)}
+[data-anim="wipeup"]{clip-path:inset(100% 0 0 0)}
+[data-anim="grow"]{transform:scaleX(0); transform-origin:left center}
+[data-anim="growc"]{transform:scaleX(0); transform-origin:center}
+.is-active [data-anim]{opacity:1; transform:none; clip-path:inset(0 0 0 0)}
+.draw{stroke-dasharray:var(--len,400); stroke-dashoffset:var(--len,400);
+  transition:stroke-dashoffset 1.6s var(--ease); transition-delay:var(--d,0s)}
+.is-active .draw{stroke-dashoffset:0}
+
+/* ---------- TEXTO METÁLICO ---------- */
+/* padding/margin compensados: con background-clip:text una caja corta recorta
+   las tildes de las mayúsculas (MOTIVACIÓN) y las vuelve invisibles */
+.gold-text,.copper-text{padding-top:.16em; margin-top:-.16em;
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.gold-text{background-image:linear-gradient(174deg,#fffbf0 0%,#f0d89e 22%,var(--gold) 52%,#a2762f 80%,#7a541e 100%)}
+.copper-text{background-image:linear-gradient(174deg,#fde3d4 0%,#eda884 34%,var(--copper) 72%,#8e2f18 100%)}
+
+/* ---------- PANELES (superficies con relleno y profundidad) ---------- */
+.panel{position:relative; overflow:hidden; border-radius:3px;
+  border:1px solid rgba(201,162,74,.20);
+  background:
+    radial-gradient(120% 90% at 88% -20%, rgba(201,162,74,.13) 0%, transparent 62%),
+    linear-gradient(163deg, rgba(74,52,24,.50) 0%, rgba(26,19,12,.90) 52%, rgba(9,7,5,.96) 100%);
+  box-shadow:0 26px 64px -34px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,228,168,.09)}
+.panel::before{content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--gold-2),var(--bronze) 55%,transparent)}
+/* variante ámbar: más luz de oro */
+.panel.amber{border-color:rgba(201,162,74,.30);
+  background:
+    radial-gradient(120% 95% at 86% -22%, rgba(224,190,113,.22) 0%, transparent 60%),
+    linear-gradient(163deg, rgba(124,92,46,.55) 0%, rgba(38,27,15,.92) 50%, rgba(11,8,5,.97) 100%)}
+/* variante cobre: el rojo del póster */
+.panel.copper{border-color:rgba(196,80,47,.30);
+  background:
+    radial-gradient(120% 95% at 86% -22%, rgba(224,138,99,.20) 0%, transparent 60%),
+    linear-gradient(163deg, rgba(140,54,30,.42) 0%, rgba(44,20,13,.92) 50%, rgba(11,7,5,.97) 100%)}
+.panel.copper::before{background:linear-gradient(90deg,var(--copper-2),#8e2f18 55%,transparent)}
+/* variante profunda: casi negra, para contraste */
+.panel.deep{border-color:rgba(201,162,74,.14);
+  background:linear-gradient(163deg, rgba(34,25,15,.80) 0%, rgba(8,6,4,.97) 100%)}
+.panel.deep::before{background:linear-gradient(90deg,var(--bronze),transparent 70%)}
+/* brillo de esquina */
+.panel .shine{position:absolute; right:-70px; top:-70px; width:200px; height:200px;
+  border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(224,190,113,.16), transparent 66%)}
+.panel.copper .shine{background:radial-gradient(circle, rgba(224,138,99,.16), transparent 66%)}
+
+/* ---------- CHIPS Y ETIQUETAS ---------- */
+.chip{display:inline-flex; align-items:center; gap:11px; padding:9px 17px 8px;
+  font-family:var(--f-ui); font-size:12px; font-weight:700; letter-spacing:.24em;
+  text-transform:uppercase; color:#17100a; white-space:nowrap;
+  background:linear-gradient(148deg,var(--gold-hi),var(--gold-2) 42%,var(--bronze));
+  box-shadow:0 6px 20px -8px rgba(201,162,74,.6)}
+.chip.copper{color:#1c0c06;
+  background:linear-gradient(148deg,#fbd9c6,var(--copper-2) 44%,var(--copper));
+  box-shadow:0 6px 20px -8px rgba(196,80,47,.6)}
+.chip .dt{width:7px; height:7px; background:currentColor; transform:rotate(45deg)}
+.lb{font-family:var(--f-ui); font-size:11px; font-weight:600; letter-spacing:.34em;
+  text-transform:uppercase; color:var(--dim-2)}
+.lb.g{color:var(--gold)}
+.diamond{width:7px; height:7px; background:var(--gold); transform:rotate(45deg); flex:0 0 auto}
+.ico{stroke:currentColor; fill:none; stroke-width:1.5; stroke-linecap:round;
+  stroke-linejoin:round; width:24px; height:24px; flex:0 0 auto}
+.ico.md{width:30px; height:30px; stroke-width:1.35}
+.ico.lg{width:44px; height:44px; stroke-width:1.15}
+.ico.xl{width:64px; height:64px; stroke-width:1}
+
+/* ---------- CABECERA / PIE ---------- */
+.head{position:relative; z-index:4; padding:38px 84px 0;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:44px}
+.head-l{display:flex; flex-direction:column; gap:13px; min-width:0}
+.head-tag{display:flex; align-items:center; gap:16px}
+.head-tag .n{font-family:var(--f-disp); font-size:12px; font-weight:700; letter-spacing:.22em;
+  color:#17100a; background:linear-gradient(148deg,var(--gold-2),var(--bronze));
+  padding:6px 13px 5px; line-height:1}
+.head h2{margin:0; font-family:var(--f-disp); font-weight:800; font-size:68px;
+  line-height:1.2; letter-spacing:-.008em}
+.head-r{display:flex; align-items:center; gap:24px; flex:0 0 auto; padding-top:6px}
+.head-r .brandline{text-align:right; display:flex; flex-direction:column; gap:6px}
+.head-r .brandline span{font-size:10px; letter-spacing:.26em; text-transform:uppercase;
+  color:var(--dim-2); font-weight:500}
+.head-r .brandline span.hi{color:var(--gold); font-weight:600}
+.head-r .vbar{width:1px; height:46px; background:linear-gradient(180deg,transparent,rgba(201,162,74,.4),transparent)}
+.logo-poli{height:48px; width:auto; opacity:.94; flex:0 0 auto}
+
+.body{position:relative; z-index:3; flex:1; min-height:0; padding:0 84px; display:flex; flex-direction:column}
+.foot{position:relative; z-index:4; padding:0 84px 22px;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  font-size:10px; letter-spacing:.26em; text-transform:uppercase; color:var(--dim-2); font-weight:500}
+.foot .fl{display:flex; align-items:center; gap:14px}
+.foot .fline{width:140px; height:1px; background:linear-gradient(90deg,rgba(201,162,74,.36),transparent)}
+
+/* ============================================================
+   L01 PORTADA · L06 GRACIAS
+   ============================================================ */
+#s1 .body,#s6 .body{align-items:center; justify-content:center}
+.cover,.thanks{display:flex; flex-direction:column; align-items:center; text-align:center; width:100%}
+.marionette{width:300px; height:172px; display:block; margin:0 auto 2px}
+.marionette .bar{fill:url(#gGold)}
+.marionette .ring{fill:none; stroke:url(#gGold); stroke-width:3.4}
+.marionette .str{stroke:url(#gStr); stroke-width:1.25; fill:none}
+.mar-sway{transform-origin:130px 10px; animation:sway 9s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-.8deg)}50%{transform:rotate(.8deg)}}
+
+.pre{margin:0 0 20px; display:flex; align-items:center; gap:20px; justify-content:center}
+.pre .ln{width:90px; height:1px; background:linear-gradient(90deg,transparent,rgba(201,162,74,.6))}
+.pre .ln.r{background:linear-gradient(90deg,rgba(201,162,74,.6),transparent)}
+.cover h1,.thanks h1{margin:0; font-family:var(--f-disp); font-weight:900;
+  line-height:.9; letter-spacing:-.015em; text-shadow:0 0 120px rgba(201,162,74,.20)}
+.cover h1{font-size:158px}
+.thanks h1{font-size:150px; letter-spacing:.06em}
+.titlerule{display:flex; align-items:center; gap:22px; justify-content:center;
+  margin:24px auto 20px; width:min(760px,100%)}
+.titlerule .l{flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(201,162,74,.6))}
+.titlerule .r{flex:1; height:1px; background:linear-gradient(90deg,rgba(201,162,74,.6),transparent)}
+.who{font-family:var(--f-disp); font-weight:600; font-size:36px; letter-spacing:.26em; color:var(--cream)}
+.thanks .rose{width:66px; height:66px; color:var(--copper); opacity:.95;
+  margin-bottom:20px; stroke-width:1.2}
+.thanks .sub{margin:22px 0 0; font-family:var(--f-serif); font-style:italic;
+  font-size:28px; color:var(--dim)}
+
+.credits{display:grid; grid-template-columns:repeat(3,1fr); width:100%; max-width:1210px;
+  margin:36px auto 0; overflow:hidden; border-radius:3px;
+  border:1px solid rgba(201,162,74,.20);
+  background:linear-gradient(163deg, rgba(74,52,24,.34) 0%, rgba(14,10,7,.86) 100%);
+  box-shadow:0 24px 60px -34px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,228,168,.07)}
+.credits div{padding:20px 26px; text-align:center; display:flex; flex-direction:column; gap:9px;
+  border-left:1px solid rgba(201,162,74,.16)}
+.credits div:first-child{border-left:0}
+.credits .k{font-size:9.5px; letter-spacing:.3em; text-transform:uppercase; color:var(--dim-2); font-weight:600}
+.credits .v{font-family:var(--f-serif); font-size:25px; font-weight:500; color:var(--gold-2); line-height:1.14}
+.credits .v small{display:block; font-size:16px; color:var(--dim); font-style:italic; margin-top:4px}
+.team{margin:24px auto 0; display:flex; flex-direction:column; align-items:center; gap:12px}
+.team .k{font-size:9.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--dim-2); font-weight:600}
+.team .names{display:flex; align-items:center; gap:22px; flex-wrap:wrap; justify-content:center}
+.team .names b{font-family:var(--f-serif); font-size:27px; font-weight:500; color:var(--cream); letter-spacing:.02em}
+.cover-logo{display:flex; align-items:center; gap:18px}
+.cover-logo img{height:62px; opacity:.96}
+.cover-logo .t{display:flex; flex-direction:column; gap:5px; padding-left:18px;
+  border-left:1px solid rgba(201,162,74,.34)}
+.cover-logo .t b{font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--cream); font-weight:600}
+.cover-logo .t span{font-size:9.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--dim-2)}
+
+/* ============================================================
+   L02 TRAMA
+   ============================================================ */
+#s2 .body{padding:0}
+.tri{display:grid; grid-template-columns:repeat(3,1fr); gap:3px; height:294px;
+  background:rgba(201,162,74,.34)}
+.tri-cell{position:relative; overflow:hidden; background:var(--noir)}
+.tri-cell img{width:100%; height:100%; object-fit:cover; object-position:50% 12%;
+  display:block; transform:scale(1.06); transition:transform 2.2s var(--ease)}
+.is-active .tri-cell img{transform:scale(1)}
+.tri-cell::after{content:''; position:absolute; inset:auto 0 0 0; height:44%;
+  background:linear-gradient(180deg,transparent,rgba(5,4,3,.52) 62%,rgba(5,4,3,.94) 100%)}
+
+.tl{position:relative; height:42px; margin:0 84px}
+.tl .track{position:absolute; left:0; right:0; top:20px; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,162,74,.6) 7%,rgba(201,162,74,.6) 93%,transparent);
+  transform:scaleX(0); transform-origin:center; transition:transform 1.3s var(--ease); transition-delay:.5s}
+.is-active .tl .track{transform:scaleX(1)}
+.tl .nodes{position:absolute; inset:0; display:grid; grid-template-columns:repeat(3,1fr)}
+.tl .nd{display:flex; justify-content:center; align-items:flex-start; padding-top:12px}
+.tl .nd i{width:17px; height:17px; display:block; transform:rotate(45deg) scale(0);
+  background:linear-gradient(148deg,var(--gold-hi),var(--bronze));
+  box-shadow:0 0 0 7px var(--noir), 0 0 30px rgba(201,162,74,.6);
+  transition:transform .6s var(--ease)}
+.is-active .tl .nd i{transform:rotate(45deg) scale(1)}
+.tl .nd:nth-child(1) i{transition-delay:.95s}
+.tl .nd:nth-child(2) i{transition-delay:1.08s}
+.tl .nd:nth-child(3) i{transition-delay:1.21s}
+
+.acts{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin:0 84px;
+  flex:1; min-height:0; padding-bottom:4px}
+.acts .panel{padding:24px 28px 26px; display:flex; flex-direction:column}
+.act-hd{display:flex; align-items:baseline; gap:15px; margin-bottom:14px}
+.act-hd .n{font-family:var(--f-disp); font-weight:900; font-size:25px; line-height:1;
+  color:rgba(224,190,113,.42)}
+.act-hd h3{margin:0; font-family:var(--f-disp); font-weight:800; font-size:40px;
+  line-height:1; letter-spacing:.08em}
+.acts p{margin:0; font-family:var(--f-serif); font-size:20px; line-height:1.42; color:var(--text)}
+
+/* ============================================================
+   L03 PERSONAJE
+   ============================================================ */
+#s3 .body{padding-top:16px}
+.demo{display:grid; grid-template-columns:1fr 1fr 1fr 1.34fr; gap:22px; height:150px}
+.demo .panel{padding:22px 24px 20px; display:flex; flex-direction:column}
+.demo .v{margin-top:auto; font-family:var(--f-disp); font-weight:800; font-size:42px;
+  line-height:1; letter-spacing:.01em; color:var(--gold-hi)}
+.demo .v.n{font-size:76px; line-height:.82; letter-spacing:-.03em}
+.demo .v.sm{font-size:29px; line-height:1.12}
+.demo .row{margin-top:auto; display:flex; align-items:baseline; gap:12px}
+.demo .row .v{margin-top:0}
+.demo .lb,.pnl-hd .lb{color:var(--dim)}
+.demo .u{font-family:var(--f-disp); font-weight:700; font-size:18px; letter-spacing:.16em; color:var(--gold-2)}
+.demo .cap{font-family:var(--f-serif); font-style:italic; font-size:17px; color:var(--dim); margin-top:5px}
+.meter{display:flex; align-items:flex-end; gap:6px; height:32px; margin-top:11px}
+.meter i{width:38px; display:block; border:1px solid rgba(201,162,74,.42);
+  background:rgba(201,162,74,.06); transform:scaleY(0); transform-origin:bottom;
+  transition:transform .7s var(--ease)}
+.meter i:nth-child(1){height:44%; transition-delay:.55s}
+.meter i:nth-child(2){height:70%; transition-delay:.67s}
+.meter i:nth-child(3){height:100%; transition-delay:.79s;
+  background:linear-gradient(180deg,var(--gold-2),rgba(124,92,46,.35));
+  border-color:rgba(224,190,113,.7); box-shadow:0 0 26px -6px rgba(224,190,113,.7)}
+.is-active .meter i{transform:scaleY(1)}
+
+.cols{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:24px;
+  flex:1; min-height:0; margin-top:16px; padding-bottom:4px}
+.cols .panel{padding:24px 26px 22px; display:flex; flex-direction:column}
+.cols .chip{align-self:flex-start; margin-bottom:20px}
+.plist{display:flex; flex-direction:column; gap:13px; flex:1; justify-content:space-evenly}
+.pli{display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start}
+.pli .dt{width:7px; height:7px; background:var(--gold-2); transform:rotate(45deg); margin-top:10px}
+.pli p{margin:0; font-family:var(--f-serif); font-size:21.5px; line-height:1.35; color:var(--text)}
+.cols .panel.copper .pli .dt{background:var(--copper-2)}
+
+/* ============================================================
+   L04 ESCENARIO
+   ============================================================ */
+#s4 .body{justify-content:center; gap:26px; padding-bottom:6px}
+#s4 .panel{padding:44px 48px 46px}
+.pnl-hd{display:flex; align-items:center; gap:15px; margin-bottom:14px}
+.pnl-hd .ico{color:var(--gold-2)}
+.yrs{display:flex; align-items:center; gap:36px}
+.yrs .y{font-family:var(--f-disp); font-weight:900; font-size:174px; line-height:.82; letter-spacing:-.035em}
+.yrs .mid{flex:1; position:relative; height:118px}
+.yrs .mid .lnwrap{position:absolute; left:0; right:0; top:54px;
+  display:flex; align-items:center; gap:10px}
+.yrs .mid .ln{flex:1; height:3px; transform-origin:left;
+  background:linear-gradient(90deg,var(--gold-hi),var(--gold-2) 40%,var(--bronze))}
+.tip{width:14px; height:16px; stroke:currentColor; stroke-width:2.2; fill:none;
+  stroke-linecap:round; stroke-linejoin:round; color:var(--bronze); flex:0 0 auto}
+.pill{position:absolute; left:50%; top:0; transform:translateX(-50%);
+  font-family:var(--f-disp); font-size:15px; font-weight:700; letter-spacing:.22em;
+  text-transform:uppercase; color:#17100a; padding:8px 22px 7px; white-space:nowrap;
+  background:linear-gradient(148deg,var(--gold-hi),var(--gold-2) 44%,var(--bronze));
+  box-shadow:0 6px 22px -8px rgba(201,162,74,.7)}
+.yrs .mid .ticks{position:absolute; left:0; right:0; top:84px; display:flex; justify-content:space-between}
+.yrs .mid .ticks i{width:1px; height:12px; background:rgba(201,162,74,.34); display:block}
+.yrs .mid .ticks i.maj{height:22px; width:2px; background:rgba(201,162,74,.62)}
+
+.route{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:40px}
+.pl{display:flex; align-items:center; gap:20px}
+.pl .pin{color:var(--gold-2)}
+.pl b{display:block; font-family:var(--f-disp); font-weight:800; font-size:58px;
+  line-height:1; letter-spacing:.02em; color:var(--gold-hi)}
+.pl span{display:block; font-family:var(--f-serif); font-style:italic; font-size:21px;
+  color:var(--dim); margin-top:8px}
+.pl.two .pin{color:var(--copper-2)} .pl.two b{color:var(--copper-hi)}
+.arc{display:flex; align-items:center; gap:10px}
+.arc .dash{flex:1; height:2px; transform-origin:left;
+  background:repeating-linear-gradient(90deg, rgba(224,190,113,.9) 0 8px, transparent 8px 18px)}
+.arc .tip{color:var(--copper-2)}
+
+/* ============================================================
+   L05 MOTIVACIÓN
+   ============================================================ */
+#s5 .body{padding-top:6px; padding-bottom:4px}
+.motiv{display:grid; grid-template-columns:1.34fr 1fr; gap:26px; flex:1; min-height:0}
+.mleft{display:grid; grid-template-rows:auto 1fr; gap:20px; min-height:0}
+.mleft .panel{padding:18px 26px 18px; display:flex; flex-direction:column}
+.mleft .chip{align-self:flex-start; margin-bottom:18px}
+.egrid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px 20px;
+  flex:1; align-content:space-evenly}
+.eit .nm{display:flex; align-items:center; gap:10px; margin-bottom:7px}
+.eit .nm .ico{width:22px; height:22px; color:var(--gold-2)}
+.eit h4{margin:0; font-family:var(--f-disp); font-weight:700; font-size:19px;
+  letter-spacing:.08em; line-height:1.12; color:var(--gold-hi)}
+.eit p{margin:0; font-family:var(--f-serif); font-size:17.5px; line-height:1.34; color:var(--text)}
+.panel.copper .eit .nm .ico{color:var(--copper-2)}
+.panel.copper .eit h4{color:var(--copper-hi)}
+
+/* conflicto */
+.confl{display:flex; flex-direction:column; padding:22px 28px 24px}
+.confl .chip{align-self:flex-start; margin-bottom:18px}
+.ctype{display:flex; align-items:baseline; gap:16px; margin-bottom:6px}
+.ctype .lb{flex:0 0 auto}
+.ctype b{font-family:var(--f-disp); font-weight:900; font-size:46px; line-height:1; letter-spacing:.02em}
+.vs-list{display:flex; flex-direction:column; gap:11px; margin-top:16px}
+.vs{display:grid; grid-template-columns:1fr auto 1fr; align-items:stretch; gap:0;
+  border:1px solid rgba(201,162,74,.20); border-radius:2px; overflow:hidden}
+.vs .a,.vs .b{display:flex; align-items:center; padding:13px 16px; min-width:0}
+.vs .a{background:linear-gradient(100deg, rgba(201,162,74,.28), rgba(124,92,46,.10));
+  justify-content:flex-end}
+.vs .b{background:linear-gradient(260deg, rgba(196,80,47,.30), rgba(96,38,22,.10))}
+.vs .a span{font-family:var(--f-disp); font-weight:800; font-size:23px; letter-spacing:.08em;
+  color:var(--gold-hi); line-height:1}
+.vs .b span{font-family:var(--f-disp); font-weight:800; font-size:23px; letter-spacing:.08em;
+  color:var(--copper-hi); line-height:1}
+.vs .o{display:grid; place-items:center; width:46px; flex:0 0 auto;
+  background:rgba(5,4,3,.72); border-left:1px solid rgba(201,162,74,.24);
+  border-right:1px solid rgba(196,80,47,.24)}
+.vs .o em{font-family:var(--f-serif); font-style:italic; font-size:19px; color:var(--gold-2)}
+.cexp{margin-top:auto; padding-top:18px; border-top:1px solid rgba(201,162,74,.20)}
+.cexp p{margin:0; font-family:var(--f-serif); font-size:20px; line-height:1.4; color:var(--text)}
+.cexp p em{color:var(--gold-2); font-style:italic}
+
+/* ============================================================
+   HUD
+   ============================================================ */
+.hud{position:fixed; z-index:200; left:0; right:0; bottom:0; pointer-events:none;
+  font-family:var(--f-ui); opacity:0; transform:translateY(8px);
+  transition:opacity .45s var(--ease), transform .45s var(--ease)}
+.hud.show{opacity:1; transform:none}
+.hud-in{display:flex; align-items:center; justify-content:space-between; gap:20px;
+  padding:14px 26px 16px; pointer-events:auto;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
+.dots{display:flex; align-items:center; gap:7px}
+.dots button{width:30px; height:3px; border:0; padding:0; cursor:pointer;
+  background:rgba(244,236,218,.22); transition:background .3s, width .3s}
+.dots button:hover{background:rgba(201,162,74,.65)}
+.dots button[aria-current="true"]{background:linear-gradient(90deg,var(--gold-2),var(--bronze)); width:46px}
+.nav{display:flex; align-items:center; gap:10px}
+.nav button{width:34px; height:34px; display:grid; place-items:center; cursor:pointer;
+  background:rgba(244,236,218,.06); border:1px solid rgba(201,162,74,.26); color:var(--gold);
+  transition:background .25s, border-color .25s, color .25s}
+.nav button:hover{background:rgba(201,162,74,.2); border-color:rgba(201,162,74,.6); color:var(--gold-hi)}
+.nav button:disabled{opacity:.3; cursor:default}
+.nav button svg{width:15px; height:15px}
+.counter{font-family:var(--f-disp); font-size:13px; font-weight:700; letter-spacing:.16em; color:var(--dim)}
+.counter b{color:var(--gold-2)}
+.hint{font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:rgba(171,154,128,.5); font-weight:500}
+.progress{position:fixed; top:0; left:0; height:2px; z-index:210; width:0;
+  background:linear-gradient(90deg,var(--bronze),var(--gold-2));
+  box-shadow:0 0 14px rgba(201,162,74,.6); transition:width .5s var(--ease)}
+
+@media (max-width:760px){.hud-in{padding:10px 14px 12px}.hint{display:none}}
+@media print{
+  @page{size:1600px 900px; margin:0}
+  html,body{overflow:visible; background:var(--noir)}
+  .viewport{position:static; display:block}
+  .stage{transform:none!important; width:1600px; height:auto; box-shadow:none}
+  .slide{position:relative; inset:auto; width:1600px; height:900px;
+    opacity:1!important; visibility:visible!important; break-after:page; page-break-after:always}
+  [data-anim]{opacity:1!important; transform:none!important; clip-path:none!important}
+  .draw{stroke-dashoffset:0!important}
+  .tl .track,.tl .nd i,.meter i,.yrs .mid .ln,.arc .dash{transform:none!important}
+  .hud,.progress,.grain{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important; transition-duration:.001s!important}}
+</style>
+</head>
+<body>
+
+<!-- ====== ICONOS (SVG inline, sin dependencias externas) ====== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf6e0"/><stop offset="40%" stop-color="#dcb968"/>
+      <stop offset="72%" stop-color="#b8873a"/><stop offset="100%" stop-color="#8a6127"/>
+    </linearGradient>
+    <linearGradient id="gStr" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e3c275" stop-opacity=".95"/>
+      <stop offset="70%" stop-color="#c9a24a" stop-opacity=".4"/>
+      <stop offset="100%" stop-color="#c9a24a" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <symbol id="i-female" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5.2"/><path d="M12 13.2V21M8.6 18h6.8"/></symbol>
+  <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3v3.2c0 1.3.6 2.5 1.7 3.2L12 12l3.3-2.6A4 4 0 0 0 17 6.2V3M7 21v-3.2c0-1.3.6-2.5 1.7-3.2L12 12l3.3 2.6A4 4 0 0 1 17 17.8V21"/></symbol>
+  <symbol id="i-steps" viewBox="0 0 24 24"><path d="M3 20h5v-5H3zM9.5 20h5V11h-5zM16 20h5V6h-5z"/></symbol>
+  <symbol id="i-teacher" viewBox="0 0 24 24"><path d="M3 5.6h7.2a1.8 1.8 0 0 1 1.8 1.8V20a2.6 2.6 0 0 0-2.6-2.6H3zM21 5.6h-7.2A1.8 1.8 0 0 0 12 7.4V20a2.6 2.6 0 0 1 2.6-2.6H21z"/><path d="M12 4.2 14.4 2"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.4" y="5.4" width="17.2" height="15.2" rx="1.4"/><path d="M3.4 10.2h17.2M8.2 3v4.4M15.8 3v4.4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.4S4.8 14.9 4.8 9.9a7.2 7.2 0 0 1 14.4 0c0 5-7.2 11.5-7.2 11.5z"/><circle cx="12" cy="9.8" r="2.6"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.6-3.9-9S9.4 5.6 12 3z"/></symbol>
+  <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.4 14.2a4.4 4.4 0 0 0 7.2 0"/><path d="M9 9.6h.01M15 9.6h.01" stroke-width="2.2"/></symbol>
+  <symbol id="i-tear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.4 15.6a4.4 4.4 0 0 1 7.2 0"/><path d="M9 9.2h.01M15 9.2h.01" stroke-width="2.2"/><path d="M15.4 17.6c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.8-1.5-2.6-1.5-2.6s-1.5 1.8-1.5 2.6z"/></symbol>
+  <symbol id="i-surprise" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="15" r="2.2"/><path d="M8.6 9h.01M15.4 9h.01" stroke-width="2.2"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.4 2.4 4.6 13.6h5.6L9.4 21.6l9.2-11.6h-5.8z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.4s-8.2-4.9-8.2-10.3A4.7 4.7 0 0 1 12 7a4.7 4.7 0 0 1 8.2 3.1c0 5.4-8.2 10.3-8.2 10.3z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.9 6.4.8-4.7 4.4 1.2 6.3L12 17.4 6.3 20.4l1.2-6.3-4.7-4.4 6.4-.8z"/></symbol>
+  <symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 21.6c3.6 0 6.4-2.6 6.4-5.9 0-4.4-4.6-6.2-4-13.3-3 1.4-5 4-5 7.2 0 1 .2 1.9.6 2.7-1-.3-1.9-1.1-2.4-2.2-1.2 1.6-2 3.5-2 5.6 0 3.3 2.8 5.9 6.4 5.9z"/></symbol>
+  <symbol id="i-rose" viewBox="0 0 24 24"><path d="M12 11.6c2.4 0 4.2-1.7 4.2-3.8S14.4 4 12 4 7.8 5.7 7.8 7.8s1.8 3.8 4.2 3.8z"/><path d="M9.6 8.4c0-1.3 1-2.3 2.4-2.3s2.4 1 2.4 2.3"/><path d="M12 11.6V21"/><path d="M12 15.4c-1.6-1.8-3.6-2-5.4-1.4 1 2 3.2 3 5.4 2.6M12 18c1.6-1.8 3.6-2 5.4-1.4-1 2-3.2 3-5.4 2.6"/></symbol>
+  <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+</svg>
+
+<div class="progress" id="bar"></div>
+
+<div class="viewport">
+<div class="stage" id="stage">
+  <div class="grain"></div>
+
+  <!-- ===================== L01 · PORTADA ===================== -->
+  <section class="slide" id="s1" aria-label="Lámina 01 — Portada">
+    <div class="head">
+      <div class="cover-logo" data-anim="down" style="--d:.1s">
+        <img src="assets/logo/politecnico-w.png" alt="Politécnico Grancolombiano">
+        <div class="t"><b>Publicidad 2</b><span>Institución Universitaria</span></div>
+      </div>
+      <div class="head-r" data-anim="down" style="--d:.18s">
+        <div class="brandline">
+          <span class="hi">Lámina 01 — Portada</span>
+          <span>Presencial · Viernes nocturno</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="cover">
+        <svg class="marionette" viewBox="0 0 260 190" data-anim="scale" style="--d:.24s" aria-hidden="true">
+          <g class="mar-sway">
+            <circle class="ring" cx="130" cy="10" r="6.5"/>
+            <rect class="bar" x="126.4" y="16" width="7.2" height="18" rx="3.6"/>
+            <rect class="bar" x="52" y="32" width="156" height="8.5" rx="4.25"/>
+            <g class="str">
+              <path class="draw" style="--len:170;--d:.7s"  d="M70 41C70 80 61 122 67 188"/>
+              <path class="draw" style="--len:170;--d:.8s"  d="M100 41C100 86 107 132 99 188"/>
+              <path class="draw" style="--len:170;--d:.9s"  d="M130 41C130 94 123 144 130 190"/>
+              <path class="draw" style="--len:170;--d:1s"   d="M160 41C160 86 167 134 159 188"/>
+              <path class="draw" style="--len:170;--d:1.1s" d="M190 41C190 80 181 124 187 188"/>
+            </g>
+          </g>
+        </svg>
+
+        <p class="pre" data-anim="up" style="--d:.34s">
+          <span class="ln"></span><span class="lb g">Ejercicio</span><span class="ln r"></span>
+        </p>
+
+        <h1 class="gold-text" data-anim="rise" style="--d:.42s">EL PADRINO</h1>
+
+        <div class="titlerule" data-anim="growc" style="--d:.7s" aria-hidden="true">
+          <span class="l"></span><span class="diamond"></span><span class="r"></span>
+        </div>
+
+        <div data-anim="up" style="--d:.78s"><span class="who">KAY ADAMS</span></div>
+
+        <div class="credits" data-anim="up" style="--d:.9s">
+          <div><span class="k">Institución</span>
+            <span class="v">Politécnico Grancolombiano<small>Institución Universitaria</small></span></div>
+          <div><span class="k">Asignatura</span>
+            <span class="v">Publicidad 2<small>Tercer semestre</small></span></div>
+          <div><span class="k">Modalidad</span>
+            <span class="v">Presencial<small>Viernes nocturno</small></span></div>
+        </div>
+
+        <div class="team" data-anim="up" style="--d:1.02s">
+          <span class="k">Integrantes</span>
+          <div class="names">
+            <b>Mariana Pinzón</b><span class="diamond"></span>
+            <b>Mariana Silva</b><span class="diamond"></span>
+            <b>William Fonseca</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span></span><span></span></div>
+  </section>
+
+  <!-- ===================== L02 · TRAMA ===================== -->
+  <section class="slide" id="s2" aria-label="Lámina 02 — Trama">
+    <div class="head">
+      <div class="head-l">
+        <div class="head-tag" data-anim="right" style="--d:.06s">
+          <span class="n">LÁMINA 02</span><span class="lb g">Kay Adams</span>
+        </div>
+        <h2 class="gold-text" data-anim="right" style="--d:.14s">TRAMA</h2>
+      </div>
+      <div class="head-r" data-anim="left" style="--d:.14s">
+        <div class="brandline"><span class="hi">Publicidad 2</span><span>Presencial · Viernes nocturno</span></div>
+        <span class="vbar"></span>
+        <img class="logo-poli" src="assets/logo/politecnico-w.png" alt="Politécnico Grancolombiano">
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="tri">
+        <figure class="tri-cell" data-anim="wipeup" style="--d:.24s;margin:0">
+          <img src="assets/img/kay-intro.webp" alt="Kay Adams — Intro"></figure>
+        <figure class="tri-cell" data-anim="wipeup" style="--d:.36s;margin:0">
+          <img src="assets/img/kay-nudo.webp" alt="Kay Adams — Nudo"></figure>
+        <figure class="tri-cell" data-anim="wipeup" style="--d:.48s;margin:0">
+          <img src="assets/img/kay-desenlace.webp" alt="Kay Adams — Desenlace"></figure>
+      </div>
+
+      <div class="tl" aria-hidden="true">
+        <span class="track"></span>
+        <div class="nodes"><span class="nd"><i></i></span><span class="nd"><i></i></span><span class="nd"><i></i></span></div>
+      </div>
+
+      <div class="acts">
+        <article class="panel amber" data-anim="up" style="--d:.68s">
+          <span class="shine"></span>
+          <div class="act-hd"><span class="n">01</span><h3 class="gold-text">INTRO</h3></div>
+          <p>Una mujer joven, carismática, culta y moderna; profesa un profundo amor hacia Michael Corleone; a través de él, tiene su primer acercamiento a un mundo de ilegalidad del cual siempre fue ajena.</p>
+        </article>
+        <article class="panel" data-anim="up" style="--d:.78s">
+          <span class="shine"></span>
+          <div class="act-hd"><span class="n">02</span><h3 class="gold-text">NUDO</h3></div>
+          <p>La noticia del atentado a Vito Corleone, publicada en el periódico, provoca que Michael se marche, dejándola atrás. Ella deberá lidiar con este repentino vacío, debatiéndose constantemente entre mantener la esperanza de encontrarlo o renunciar definitivamente a su relación.</p>
+        </article>
+        <article class="panel copper" data-anim="up" style="--d:.88s">
+          <span class="shine"></span>
+          <div class="act-hd"><span class="n">03</span><h3 class="copper-text">DESENLACE</h3></div>
+          <p>Luego de una larga espera, su amado regresa, y a pesar de su dolor por el abandono, lo perdona, se casan, forman un hogar y ella acepta que su esposo ya no es el mismo hombre del que se enamoró al inicio, aceptando que ahora es el nuevo líder de la mafia.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="fl"><span class="fline"></span>Trama · Intro · Nudo · Desenlace</span>
+      <span>Lámina 02</span>
+    </div>
+  </section>
+
+  <!-- ===================== L03 · PERSONAJE ===================== -->
+  <section class="slide" id="s3" aria-label="Lámina 03 — Personaje">
+    <span class="wm" style="right:-70px;bottom:-200px">03</span>
+    <div class="head">
+      <div class="head-l">
+        <div class="head-tag" data-anim="right" style="--d:.06s">
+          <span class="n">LÁMINA 03</span><span class="lb g">Kay Adams</span>
+        </div>
+        <h2 class="gold-text" data-anim="right" style="--d:.14s">PERSONAJE</h2>
+      </div>
+      <div class="head-r" data-anim="left" style="--d:.14s">
+        <div class="brandline"><span class="hi">Publicidad 2</span><span>Presencial · Viernes nocturno</span></div>
+        <span class="vbar"></span>
+        <img class="logo-poli" src="assets/logo/politecnico-w.png" alt="Politécnico Grancolombiano">
+      </div>
+    </div>
+
+    <div class="body">
+      <!-- DEMOGRÁFICOS -->
+      <div class="demo">
+        <article class="panel deep" data-anim="up" style="--d:.2s">
+          <span class="lb">Sexo</span>
+          <span class="v">Femenino</span>
+        </article>
+        <article class="panel amber" data-anim="up" style="--d:.27s">
+          <span class="shine"></span>
+          <span class="lb">Edad</span>
+          <span class="row"><span class="v n gold-text">21</span><span class="u">AÑOS</span></span>
+          <span class="cap">Aproximadamente</span>
+        </article>
+        <article class="panel deep" data-anim="up" style="--d:.34s">
+          <span class="lb">NSE</span>
+          <span class="v">Alto</span>
+          <span class="meter" aria-hidden="true"><i></i><i></i><i></i></span>
+        </article>
+        <article class="panel deep" data-anim="up" style="--d:.41s">
+          <span class="lb">Estudios</span>
+          <span class="v sm">Maestra de escuela primaria</span>
+        </article>
+      </div>
+
+      <!-- ACTITUDES · INTERESES · INTENCIONES -->
+      <div class="cols">
+        <article class="panel" data-anim="up" style="--d:.5s">
+          <span class="shine"></span>
+          <span class="chip"><span class="dt"></span>Actitudes / Opiniones</span>
+          <div class="plist">
+            <div class="pli"><span class="dt"></span><p>Mujer curiosa por saber más sobre la familia de su amado.</p></div>
+            <div class="pli"><span class="dt"></span><p>Tenía afinidad con la legalidad y desagrado con la vida criminal.</p></div>
+            <div class="pli"><span class="dt"></span><p>Tenía esperanza y confianza en su amado, y su palabra.</p></div>
+            <div class="pli"><span class="dt"></span><p>Una mujer paciente y determinada.</p></div>
+            <div class="pli"><span class="dt"></span><p>Una mujer fiel a sus sentimientos.</p></div>
+            <div class="pli"><span class="dt"></span><p>Cree en el valor de formar una familia y mantener un hogar.</p></div>
+          </div>
+        </article>
+
+        <article class="panel amber" data-anim="up" style="--d:.58s">
+          <span class="shine"></span>
+          <span class="chip"><span class="dt"></span>Intereses</span>
+          <div class="plist">
+            <div class="pli"><span class="dt"></span><p>Su vocación por la docencia y el desarrollo profesional.</p></div>
+            <div class="pli"><span class="dt"></span><p>El amor y la fascinación que siente inicialmente por Michael Corleone.</p></div>
+            <div class="pli"><span class="dt"></span><p>Su deseo de mantener una vida tranquila, culta y moderna, alejada del entorno de la mafia.</p></div>
+          </div>
+        </article>
+
+        <article class="panel copper" data-anim="up" style="--d:.66s">
+          <span class="shine"></span>
+          <span class="chip copper"><span class="dt"></span>Intenciones</span>
+          <div class="plist">
+            <div class="pli"><span class="dt"></span><p>Decidir si continúa la búsqueda de su amado o se resigna a decirle adiós tras su ausencia.</p></div>
+            <div class="pli"><span class="dt"></span><p>Graduarse como maestra para ejercer su profesión.</p></div>
+            <div class="pli"><span class="dt"></span><p>Casarse y formalizar un hogar con el amor de su vida (Michael).</p></div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="fl"><span class="fline"></span>Personaje · Demográficos · Actitudes · Intereses · Intenciones</span>
+      <span>Lámina 03</span>
+    </div>
+  </section>
+
+  <!-- ===================== L04 · ESCENARIO ===================== -->
+  <section class="slide" id="s4" aria-label="Lámina 04 — Escenario">
+    <span class="wm" style="right:-70px;bottom:-200px">04</span>
+    <div class="head">
+      <div class="head-l">
+        <div class="head-tag" data-anim="right" style="--d:.06s">
+          <span class="n">LÁMINA 04</span><span class="lb g">Kay Adams</span>
+        </div>
+        <h2 class="gold-text" data-anim="right" style="--d:.14s">ESCENARIO</h2>
+      </div>
+      <div class="head-r" data-anim="left" style="--d:.14s">
+        <div class="brandline"><span class="hi">Publicidad 2</span><span>Presencial · Viernes nocturno</span></div>
+        <span class="vbar"></span>
+        <img class="logo-poli" src="assets/logo/politecnico-w.png" alt="Politécnico Grancolombiano">
+      </div>
+    </div>
+
+    <div class="body">
+      <!-- CUANDO -->
+      <article class="panel amber" data-anim="rise" style="--d:.22s">
+        <span class="shine"></span>
+        <div class="pnl-hd"><svg class="ico md"><use href="#i-calendar"/></svg><span class="lb">Cuando</span></div>
+        <div class="yrs">
+          <span class="y gold-text">1945</span>
+          <span class="mid" aria-hidden="true">
+            <span class="pill" data-anim="scale" style="--d:.85s">10 años</span>
+            <span class="lnwrap">
+              <span class="ln" data-anim="grow" style="--d:.5s"></span>
+              <svg class="tip" data-anim="scale" style="--d:1.15s" viewBox="0 0 14 16"><path d="M3 2l8 6-8 6"/></svg>
+            </span>
+            <span class="ticks">
+              <i class="maj"></i><i></i><i></i><i></i><i></i>
+              <i class="maj"></i><i></i><i></i><i></i><i></i><i class="maj"></i>
+            </span>
+          </span>
+          <span class="y gold-text">1955</span>
+        </div>
+      </article>
+
+      <!-- DONDE -->
+      <article class="panel deep" data-anim="rise" style="--d:.34s">
+        <div class="pnl-hd"><svg class="ico md"><use href="#i-globe"/></svg><span class="lb">Donde</span></div>
+        <div class="route">
+          <div class="pl">
+            <svg class="ico xl pin"><use href="#i-pin"/></svg>
+            <span><b>NEW YORK</b><span>Principalmente</span></span>
+          </div>
+          <div class="arc" aria-hidden="true">
+            <span class="dash" data-anim="grow" style="--d:.7s"></span>
+            <svg class="tip" data-anim="scale" style="--d:1.3s" viewBox="0 0 14 16"><path d="M3 2l8 6-8 6"/></svg>
+          </div>
+          <div class="pl two">
+            <svg class="ico xl pin"><use href="#i-pin"/></svg>
+            <span><b>NEW HAMPSHIRE</b><span>Luego · (Massachusetts)</span></span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="foot">
+      <span class="fl"><span class="fline"></span>Escenario · Cuando y donde</span>
+      <span>Lámina 04</span>
+    </div>
+  </section>
+
+  <!-- ===================== L05 · MOTIVACIÓN ===================== -->
+  <section class="slide" id="s5" aria-label="Lámina 05 — Motivación">
+    <span class="wm" style="left:-60px;bottom:-210px">05</span>
+    <div class="head">
+      <div class="head-l">
+        <div class="head-tag" data-anim="right" style="--d:.06s">
+          <span class="n">LÁMINA 05</span><span class="lb g">Kay Adams</span>
+        </div>
+        <h2 class="gold-text" data-anim="right" style="--d:.14s">MOTIVACIÓN</h2>
+      </div>
+      <div class="head-r" data-anim="left" style="--d:.14s">
+        <div class="brandline"><span class="hi">Publicidad 2</span><span>Presencial · Viernes nocturno</span></div>
+        <span class="vbar"></span>
+        <img class="logo-poli" src="assets/logo/politecnico-w.png" alt="Politécnico Grancolombiano">
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="motiv">
+        <div class="mleft">
+          <!-- EMOCIONES (primer grupo del Excel) -->
+          <article class="panel amber" data-anim="up" style="--d:.2s">
+            <span class="shine"></span>
+            <span class="chip"><span class="dt"></span>Emociones</span>
+            <div class="egrid">
+              <div class="eit">
+                <span class="nm"><svg class="ico"><use href="#i-smile"/></svg><h4>ALEGRÍA</h4></span>
+                <p>Cuando están de turista por Manhattan y alegría por su hijo.</p>
+              </div>
+              <div class="eit">
+                <span class="nm"><svg class="ico"><use href="#i-tear"/></svg><h4>TRISTEZA</h4></span>
+                <p>El abandono de Michael.</p>
+              </div>
+              <div class="eit">
+                <span class="nm"><svg class="ico"><use href="#i-surprise"/></svg><h4>SORPRESA</h4></span>
+                <p>Al enterarse de los negocios de la familia de Michael. Cuando vuelve Michael, cuando le propone matrimonio.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- SENTIMIENTOS (segundo grupo del Excel) -->
+          <article class="panel copper" data-anim="up" style="--d:.3s">
+            <span class="shine"></span>
+            <span class="chip copper"><span class="dt"></span>Sentimientos</span>
+            <div class="egrid">
+              <div class="eit">
+                <span class="nm"><svg class="ico"><use href="#i-hourglass"/></svg><h4>IMPACIENCIA</h4></span>
+                <p>Cuando fue a buscar a Michael.</p>
+              </div>
+              <div class="eit">
+                <span class="nm"><svg class="ico"><use href="#i-bolt"/></svg><h4>INDIGNACIÓN</h4></span>
+                <p>Cuando volvió Michael.</p>
+              </div>
+              <div class="eit">
+                <span class="nm"><svg class="ico"><use href="#i-heart"/></svg><h4>AMOR</h4></span>
+                <p>Hacia Michael y hacia su vocación.</p>
+              </div>
+              <div class="eit">
+                <span class="nm"><svg class="ico"><use href="#i-star"/></svg><h4>ADMIRACIÓN</h4></span>
+                <p>Admiraba a Michael por sus logros.</p>
+              </div>
+              <div class="eit">
+                <span class="nm"><svg class="ico"><use href="#i-fire"/></svg><h4>ENFADO</h4></span>
+                <p>Al regreso de Michael.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- CONFLICTO / SITUACIÓN -->
+        <article class="panel confl" data-anim="up" style="--d:.4s">
+          <span class="shine"></span>
+          <span class="chip"><span class="dt"></span>Conflicto / Situación</span>
+
+          <div class="ctype">
+            <span class="lb">Tipo</span>
+            <b class="gold-text">EXISTENCIAL</b>
+          </div>
+
+          <span class="lb" style="margin-top:20px">Se obtiene al comparar</span>
+          <div class="vs-list">
+            <div class="vs" data-anim="left" style="--d:.56s">
+              <span class="a"><span>AMOR</span></span>
+              <span class="o"><em>o</em></span>
+              <span class="b"><span>PRINCIPIOS</span></span>
+            </div>
+            <div class="vs" data-anim="left" style="--d:.64s">
+              <span class="a"><span>AMOR</span></span>
+              <span class="o"><em>o</em></span>
+              <span class="b"><span>LEGALIDAD</span></span>
+            </div>
+            <div class="vs" data-anim="left" style="--d:.72s">
+              <span class="a"><span>AMOR</span></span>
+              <span class="o"><em>o</em></span>
+              <span class="b"><span>FUTURO</span></span>
+            </div>
+          </div>
+
+          <div class="cexp">
+            <p>El dilema central de Kay radica en elegir entre el amor hacia Michael y sus principios morales <em>(legalidad y futuro)</em>.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="fl"><span class="fline"></span>Motivación · Emociones · Sentimientos · Conflicto</span>
+      <span>Lámina 05</span>
+    </div>
+  </section>
+
+  <!-- ===================== L06 · GRACIAS ===================== -->
+  <section class="slide" id="s6" aria-label="Lámina 06 — Gracias">
+    <div class="head">
+      <div class="cover-logo" data-anim="down" style="--d:.1s">
+        <img src="assets/logo/politecnico-w.png" alt="Politécnico Grancolombiano">
+        <div class="t"><b>Publicidad 2</b><span>Institución Universitaria</span></div>
+      </div>
+      <div class="head-r" data-anim="down" style="--d:.18s">
+        <div class="brandline">
+          <span class="hi">Lámina 06 — Cierre</span>
+          <span>Presencial · Viernes nocturno</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="thanks">
+        <svg class="rose ico" data-anim="scale" style="--d:.24s"><use href="#i-rose"/></svg>
+        <h1 class="gold-text" data-anim="rise" style="--d:.32s">GRACIAS</h1>
+        <div class="titlerule" data-anim="growc" style="--d:.6s" aria-hidden="true">
+          <span class="l"></span><span class="diamond"></span><span class="r"></span>
+        </div>
+        <p class="sub" data-anim="up" style="--d:.68s">El Padrino · Kay Adams</p>
+
+        <div class="credits" data-anim="up" style="--d:.78s">
+          <div><span class="k">Institución</span>
+            <span class="v">Politécnico Grancolombiano<small>Institución Universitaria</small></span></div>
+          <div><span class="k">Asignatura</span>
+            <span class="v">Publicidad 2<small>Tercer semestre</small></span></div>
+          <div><span class="k">Modalidad</span>
+            <span class="v">Presencial<small>Viernes nocturno</small></span></div>
+        </div>
+
+        <div class="team" data-anim="up" style="--d:.9s">
+          <span class="k">Integrantes</span>
+          <div class="names">
+            <b>Mariana Pinzón</b><span class="diamond"></span>
+            <b>Mariana Silva</b><span class="diamond"></span>
+            <b>William Fonseca</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span></span><span></span></div>
+  </section>
+
+</div><!-- /stage -->
+</div><!-- /viewport -->
+
+<div class="hud">
+  <div class="hud-in">
+    <div class="dots" id="dots" role="tablist" aria-label="Ir a lámina"></div>
+    <span class="hint">← →  navegar · F pantalla completa · P imprimir</span>
+    <div class="nav">
+      <span class="counter"><b id="cur">01</b> / <span id="tot">06</span></span>
+      <button id="prev" aria-label="Lámina anterior"><svg class="ico"><use href="#i-arrow-l"/></svg></button>
+      <button id="next" aria-label="Lámina siguiente"><svg class="ico"><use href="#i-arrow-r"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var stage  = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(stage.querySelectorAll('.slide'));
+  var dotsEl = document.getElementById('dots');
+  var barEl  = document.getElementById('bar');
+  var curEl  = document.getElementById('cur');
+  var totEl  = document.getElementById('tot');
+  var prevB  = document.getElementById('prev');
+  var nextB  = document.getElementById('next');
+  var i = 0;
+  var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+
+  /* escala el escenario 1600x900 al viewport */
+  function fit(){
+    var k = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    document.documentElement.style.setProperty('--k', k);
+  }
+  window.addEventListener('resize', fit, {passive:true});
+  fit();
+
+  /* HUD con auto-ocultado: la lámina queda limpia al proyectar */
+  var hud = document.querySelector('.hud'), hudT = 0;
+  function wake(){
+    hud.classList.add('show');
+    clearTimeout(hudT);
+    hudT = setTimeout(function(){ hud.classList.remove('show'); }, 2600);
+  }
+  ['mousemove','mousedown','keydown','wheel','touchstart'].forEach(function(ev){
+    window.addEventListener(ev, wake, {passive:true});
+  });
+  hud.addEventListener('mouseenter', function(){ clearTimeout(hudT); hud.classList.add('show'); });
+  hud.addEventListener('mouseleave', wake);
+  wake();
+
+  slides.forEach(function(s, n){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-label','Lámina ' + pad(n + 1));
+    b.addEventListener('click', function(){ go(n); });
+    dotsEl.appendChild(b);
+  });
+  totEl.textContent = pad(slides.length);
+
+  function go(n){
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    if (n === i && slides[i].classList.contains('is-active')) return;
+    slides.forEach(function(s){ s.classList.remove('is-active'); });
+    void slides[n].offsetWidth;
+    slides[n].classList.add('is-active');
+    i = n;
+    curEl.textContent = pad(i + 1);
+    barEl.style.width = ((i + 1) / slides.length * 100) + '%';
+    Array.prototype.forEach.call(dotsEl.children, function(b, x){
+      b.setAttribute('aria-current', x === i ? 'true' : 'false');
+    });
+    prevB.disabled = (i === 0);
+    nextB.disabled = (i === slides.length - 1);
+    if (history.replaceState) history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  prevB.addEventListener('click', function(){ go(i - 1); });
+  nextB.addEventListener('click', function(){ go(i + 1); });
+
+  document.addEventListener('keydown', function(e){
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ' || k === 'Enter'){ e.preventDefault(); go(i + 1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp'){ e.preventDefault(); go(i - 1); }
+    else if (k === 'Home'){ e.preventDefault(); go(0); }
+    else if (k === 'End'){ e.preventDefault(); go(slides.length - 1); }
+    else if (k === 'f' || k === 'F'){
+      e.preventDefault();
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    }
+    else if (k === 'p' || k === 'P'){ e.preventDefault(); window.print(); }
+  });
+
+  var lock = 0;
+  window.addEventListener('wheel', function(e){
+    var t = Date.now();
+    if (t - lock < 700 || Math.abs(e.deltaY) < 24) return;
+    lock = t;
+    go(i + (e.deltaY > 0 ? 1 : -1));
+  }, {passive:true});
+
+  var x0 = null, y0 = null;
+  window.addEventListener('touchstart', function(e){
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+  }, {passive:true});
+  window.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) go(i + (dx < 0 ? 1 : -1));
+    x0 = y0 = null;
+  }, {passive:true});
+
+  var start = parseInt((location.hash || '').replace('#',''), 10);
+  go(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>
