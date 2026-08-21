@@ -328,8 +328,8 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 .axis-hd{display:flex; align-items:center; justify-content:space-between; gap:24px}
 .axis-hd .g{display:flex; align-items:center; gap:12px}
 .axis-hd .ico{color:var(--gold-2); width:23px; height:23px}
-.rail{position:relative; height:76px; margin:0 104px}
-.rail .line{position:absolute; left:0; right:0; top:50px; height:2px; transform-origin:left;
+.rail{position:relative; height:90px; margin:0 104px}
+.rail .line{position:absolute; left:0; right:0; top:52px; height:2px; transform-origin:left;
   background:linear-gradient(90deg, var(--bronze), var(--gold-2) 50%, var(--bronze));
   transform:scaleX(0); transition:transform 1.5s var(--ease); transition-delay:.3s}
 .is-active .rail .line{transform:scaleX(1)}
@@ -357,7 +357,7 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 
 /* --- los ocho escenarios; el relleno del panel codifica la zona --- */
 .scns{display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:minmax(0,1fr);
-  gap:17px; flex:1; min-height:0; margin-top:6px}
+  gap:17px; flex:1; min-height:0; margin-top:12px}
 .scn{padding:13px 16px 12px; display:flex; flex-direction:column}
 .scn .hd{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
 .scn .hd .ico{color:var(--gold-2); width:26px; height:26px}
@@ -369,7 +369,7 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   font-weight:700; line-height:1.2; text-align:right}
 .scn.deep .mo{color:var(--dim)}
 .scn .zn{font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold);
-  font-weight:700; line-height:1.5; min-height:27px}
+  font-weight:700; line-height:1.5; min-height:14px}
 .scn h4{margin:5px 0 0; font-family:var(--f-disp); font-weight:700; font-size:17px;
   line-height:1.2; letter-spacing:.015em; color:var(--gold-hi)}
 .scn .hr{width:30px; height:1px; margin:7px 0 7px;
@@ -380,7 +380,7 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 
 /* --- resumen: solo los lugares únicos, agrupados por ciudad --- */
 .esc-sum{display:grid; grid-template-columns:auto 1px 1fr; gap:26px; align-items:center;
-  margin-top:9px; padding:7px 22px}
+  margin-top:10px; padding:10px 22px}
 .esc-sum .vr{align-self:stretch;
   background:linear-gradient(180deg,transparent,rgba(201,162,74,.32),transparent)}
 .sum-l{display:flex; flex-direction:column; gap:4px}
@@ -909,8 +909,8 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
         <article class="scn panel" data-anim="rise" style="--d:.72s">
           <span class="shine"></span>
           <div class="hd"><svg class="ico"><use href="#i-door"/></svg><span class="dt2"><span class="yb">1955</span><span class="mo">Febrero / Marzo</span></span></div>
-          <span class="zn">Nueva York · Long Island · Mansión Corleone</span>
-          <h4>Despacho de Michael</h4>
+          <span class="zn">Nueva York · Long Island</span>
+          <h4>Despacho de Michael · Mansión Corleone</h4>
           <span class="hr"></span>
           <p>Kay confronta a Michael sobre el asesinato de Carlo, él le miente, y le cierran la puerta en la cara.</p>
         </article>
@@ -927,7 +927,7 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
         <div class="sum-r">
           <div class="sum-city">
             <span class="cn"><span>Nueva York</span><em>5 lugares</em></span>
-            <p>Mansión Corleone <i>(boda, entrada y despacho)</i> · Teatro Radio City Music Hall · Calles de Manhattan · Hotel St. Regis · Catedral de Nueva York</p>
+            <p>Mansión Corleone · Teatro Radio City Music Hall · Calles de Manhattan · Hotel St. Regis · Catedral de Nueva York</p>
           </div>
           <div class="sum-city b">
             <span class="cn"><span>Nueva Inglaterra</span><em>1 lugar</em></span>
