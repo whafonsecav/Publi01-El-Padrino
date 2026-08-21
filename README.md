@@ -26,8 +26,7 @@ Abrir `index.html` en cualquier navegador moderno, o visitarla publicada con Git
 | Primera / última | `Inicio` / `Fin` |
 | Pantalla completa | `F` |
 | Imprimir o exportar a PDF | `P` |
-| Volumen de la música | Botones `−` / `+` junto al número de lámina |
-| Silenciar la música | Icono de bocina |
+| Volumen de la música | Clic en el icono de bocina → barra deslizante |
 
 La barra de navegación inferior se oculta sola a los 2,6 s para que la lámina quede
 limpia al proyectar; reaparece con cualquier movimiento del mouse o del teclado.
@@ -35,9 +34,14 @@ limpia al proyectar; reaparece con cualquier movimiento del mouse o del teclado.
 ### Música
 
 El tema de la película (`assets/music/tema-el-padrino.mp3`) suena en bucle al 50 %
-de volumen. Arranca en la primera interacción —un clic, una tecla, la rueda o un
-toque— porque los navegadores bloquean el autoplay con sonido hasta que hay un
-gesto del usuario.
+de volumen y vuelve a empezar solo al terminar. Arranca en la primera interacción
+—un clic, una tecla, la rueda o un toque— porque los navegadores bloquean el
+autoplay con sonido hasta que hay un gesto del usuario.
+
+Junto al número de lámina hay un único botón de bocina; al pulsarlo se despliega
+hacia arriba una barra vertical para graduar el volumen libremente (0–100 %). Se
+cierra al hacer clic afuera o con `Esc`, y mientras está abierta la barra inferior
+no se auto-oculta.
 
 Para exportar a PDF: `P` → destino *Guardar como PDF* → orientación horizontal,
 márgenes *Ninguno* y activar *Gráficos de fondo*.

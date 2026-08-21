@@ -420,25 +420,51 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 .counter{font-family:var(--f-disp); font-size:13px; font-weight:700; letter-spacing:.16em; color:var(--dim)}
 .counter b{color:var(--gold-2)}
 
-/* control de volumen: discreto, junto al número de lámina */
-.vol{display:flex; align-items:center; gap:7px; margin-right:4px;
+/* control de volumen: un solo botón; al pulsarlo sube una barra vertical */
+.vol{position:relative; display:flex; align-items:center; margin-right:6px;
   padding-right:14px; border-right:1px solid rgba(201,162,74,.18)}
-.vol button{width:26px; height:26px; display:grid; place-items:center; cursor:pointer;
+.vol .sp{width:30px; height:30px; display:grid; place-items:center; cursor:pointer;
   background:none; border:1px solid transparent; color:var(--dim-2); padding:0;
   transition:color .25s, border-color .25s, background .25s}
-.vol button:hover{color:var(--gold-2); border-color:rgba(201,162,74,.26); background:rgba(201,162,74,.08)}
-.vol button svg{width:15px; height:15px; stroke-width:1.6}
-.vol .sp svg{width:17px; height:17px}
+.vol .sp:hover{color:var(--gold-2); border-color:rgba(201,162,74,.26); background:rgba(201,162,74,.08)}
+.vol .sp svg{width:18px; height:18px; stroke-width:1.6}
 .vol.is-on .sp{color:var(--gold)}
-.vol .bars{display:flex; align-items:flex-end; gap:2.5px; height:13px}
-.vol .bars i{width:3px; height:100%; display:block; background:rgba(244,236,218,.16);
-  transition:background .25s}
-.vol .bars i.on{background:linear-gradient(180deg,var(--gold-2),var(--bronze))}
-.vol .bars i:nth-child(1){height:36%}
-.vol .bars i:nth-child(2){height:52%}
-.vol .bars i:nth-child(3){height:68%}
-.vol .bars i:nth-child(4){height:84%}
-.vol .bars i:nth-child(5){height:100%}
+.vol.is-open .sp{color:var(--gold-hi); border-color:rgba(201,162,74,.4); background:rgba(201,162,74,.12)}
+
+.volpop{position:absolute; left:50%; bottom:calc(100% + 12px); transform:translate(-50%,8px);
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  padding:14px 10px 12px; border-radius:3px; pointer-events:none;
+  opacity:0; visibility:hidden;
+  border:1px solid rgba(201,162,74,.28);
+  background:linear-gradient(168deg, rgba(48,35,20,.97) 0%, rgba(10,8,5,.98) 100%);
+  box-shadow:0 18px 44px -18px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,228,168,.10);
+  transition:opacity .28s var(--ease), transform .28s var(--ease), visibility .28s}
+.vol.is-open .volpop{opacity:1; visibility:visible; transform:translate(-50%,0); pointer-events:auto}
+.volpop::after{content:''; position:absolute; top:100%; left:50%; margin-left:-5px;
+  border:5px solid transparent; border-top-color:rgba(201,162,74,.28)}
+.volpop .pct{font-family:var(--f-disp); font-size:11px; font-weight:700;
+  letter-spacing:.1em; color:var(--gold-2); line-height:1; min-width:26px; text-align:center}
+
+.volpop .slot{position:relative; width:26px; height:128px}
+.volpop input[type=range]{
+  position:absolute; top:50%; left:50%; width:128px; height:26px; margin:0;
+  transform:translate(-50%,-50%) rotate(-90deg);
+  -webkit-appearance:none; appearance:none; background:transparent; cursor:pointer}
+.volpop input[type=range]:focus{outline:none}
+.volpop input[type=range]::-webkit-slider-runnable-track{
+  height:5px; border-radius:3px;
+  background:linear-gradient(90deg, var(--gold-2) 0 var(--p,50%), rgba(244,236,218,.15) var(--p,50%) 100%)}
+.volpop input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:14px; height:14px; border-radius:50%; border:0; margin-top:-4.5px;
+  background:linear-gradient(150deg,#fff9e8,var(--gold-2) 55%,var(--bronze));
+  box-shadow:0 0 12px rgba(201,162,74,.75)}
+.volpop input[type=range]::-moz-range-track{
+  height:5px; border-radius:3px;
+  background:linear-gradient(90deg, var(--gold-2) 0 var(--p,50%), rgba(244,236,218,.15) var(--p,50%) 100%)}
+.volpop input[type=range]::-moz-range-thumb{
+  width:14px; height:14px; border-radius:50%; border:0;
+  background:linear-gradient(150deg,#fff9e8,var(--gold-2) 55%,var(--bronze));
+  box-shadow:0 0 12px rgba(201,162,74,.75)}
 .hint{font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:rgba(171,154,128,.5); font-weight:500}
 .progress{position:fixed; top:0; left:0; height:2px; z-index:210; width:0;
   background:linear-gradient(90deg,var(--bronze),var(--gold-2));
@@ -494,8 +520,6 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
   <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9.4h3.2L12 5.2v13.6L7.2 14.6H4z"/><path d="M15.6 9.2a4 4 0 0 1 0 5.6M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></symbol>
   <symbol id="i-vol-off" viewBox="0 0 24 24"><path d="M4 9.4h3.2L12 5.2v13.6L7.2 14.6H4z"/><path d="M16.4 9.6l4.4 4.8M20.8 9.6l-4.4 4.8"/></symbol>
-  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
-  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol>
 </svg>
 
 <div class="progress" id="bar"></div>
@@ -943,11 +967,16 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
     <span class="hint">← →  navegar · F pantalla completa · P imprimir</span>
     <div class="nav">
       <div class="vol" id="vol">
-        <button class="sp" id="volMute" aria-label="Silenciar o reactivar la música" aria-pressed="false">
+        <button class="sp" id="volBtn" aria-label="Volumen de la música"
+                aria-expanded="false" aria-controls="volPop">
           <svg class="ico"><use href="#i-vol" id="volIcon"/></svg></button>
-        <button id="volDown" aria-label="Bajar volumen"><svg class="ico"><use href="#i-minus"/></svg></button>
-        <span class="bars" id="volBars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-        <button id="volUp" aria-label="Subir volumen"><svg class="ico"><use href="#i-plus"/></svg></button>
+        <div class="volpop" id="volPop">
+          <span class="pct" id="volPct">50</span>
+          <div class="slot">
+            <input type="range" id="volRange" min="0" max="100" step="1" value="50"
+                   aria-label="Nivel de volumen" orient="vertical">
+          </div>
+        </div>
       </div>
       <span class="counter"><b id="cur">01</b> / <span id="tot">06</span></span>
       <button id="prev" aria-label="Lámina anterior"><svg class="ico"><use href="#i-arrow-l"/></svg></button>
@@ -984,7 +1013,9 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   function wake(){
     hud.classList.add('show');
     clearTimeout(hudT);
-    hudT = setTimeout(function(){ hud.classList.remove('show'); }, 2600);
+    hudT = setTimeout(function(){
+      if (!volOpen) hud.classList.remove('show');   // no se oculta con el volumen abierto
+    }, 2600);
   }
   ['mousemove','mousedown','keydown','wheel','touchstart'].forEach(function(ev){
     window.addEventListener(ev, wake, {passive:true});
@@ -996,32 +1027,35 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   /* ---------- MÚSICA DE FONDO ----------
      Los navegadores bloquean el autoplay con sonido, así que arranca en la
      primera interacción del usuario (cualquier clic, tecla, rueda o toque). */
+  var volOpen = false;   /* mientras el deslizador esté abierto, el HUD no se oculta */
+
   (function music(){
     var a = document.getElementById('bgm');
     if (!a) return;
     var volEl  = document.getElementById('vol');
-    var barsEl = document.getElementById('volBars');
+    var btn    = document.getElementById('volBtn');
+    var pop    = document.getElementById('volPop');
+    var range  = document.getElementById('volRange');
+    var pctEl  = document.getElementById('volPct');
     var iconEl = document.getElementById('volIcon');
-    var muteB  = document.getElementById('volMute');
-    var STEP = 0.1, level = 0.5, muted = false, started = false;
+    var started = false;
 
-    a.volume = level;
+    a.volume = 0.5;
+    a.loop = true;
 
     function paint(){
-      var shown = muted ? 0 : level;
-      var lit = Math.round(shown * 5);
-      Array.prototype.forEach.call(barsEl.children, function(b, n){
-        b.classList.toggle('on', n < lit);
-      });
-      iconEl.setAttribute('href', (muted || shown === 0) ? '#i-vol-off' : '#i-vol');
-      muteB.setAttribute('aria-pressed', muted ? 'true' : 'false');
-      volEl.classList.toggle('is-on', !muted && shown > 0 && started);
+      var v = a.volume;
+      range.value = Math.round(v * 100);
+      range.style.setProperty('--p', Math.round(v * 100) + '%');
+      pctEl.textContent = Math.round(v * 100);
+      iconEl.setAttribute('href', v === 0 ? '#i-vol-off' : '#i-vol');
+      volEl.classList.toggle('is-on', v > 0 && started);
     }
 
     function start(){
       if (started) return;
       var p = a.play();
-      if (p && p.catch) p.catch(function(){ started = false; });   // aún bloqueado: se reintenta
+      if (p && p.catch) p.catch(function(){ started = false; });   // sigue bloqueado: se reintenta
       started = true;
       paint();
     }
@@ -1029,25 +1063,34 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
       window.addEventListener(ev, start, {passive:true});
     });
 
-    function setLevel(v){
-      level = Math.max(0, Math.min(1, Math.round(v * 10) / 10));
-      if (level > 0) muted = false;
-      a.muted = muted;
-      a.volume = level;
+    /* Rearranque: `loop` cubre el caso normal, pero si el navegador emite
+       'ended' (mp3 con duración imprecisa, cambio de pestaña) se reinicia. */
+    a.addEventListener('ended', function(){
+      a.currentTime = 0;
+      var p = a.play();
+      if (p && p.catch) p.catch(function(){});
+    });
+
+    /* deslizador continuo */
+    range.addEventListener('input', function(){
+      a.volume = Math.max(0, Math.min(1, range.value / 100));
       paint();
-    }
-    document.getElementById('volUp').addEventListener('click', function(e){
-      e.stopPropagation(); setLevel(level + STEP); start();
+      start();
     });
-    document.getElementById('volDown').addEventListener('click', function(e){
-      e.stopPropagation(); setLevel(level - STEP); start();
-    });
-    muteB.addEventListener('click', function(e){
+
+    function open(){ volOpen = true;  volEl.classList.add('is-open');
+                     btn.setAttribute('aria-expanded','true'); }
+    function close(){ volOpen = false; volEl.classList.remove('is-open');
+                      btn.setAttribute('aria-expanded','false'); }
+
+    btn.addEventListener('click', function(e){
       e.stopPropagation();
-      muted = !muted; a.muted = muted;
-      if (!muted && level === 0) setLevel(0.5);
-      paint(); start();
+      if (volEl.classList.contains('is-open')) close(); else open();
+      start();
     });
+    pop.addEventListener('click', function(e){ e.stopPropagation(); });
+    document.addEventListener('click', function(){ if (volOpen) close(); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && volOpen) close(); });
 
     paint();
   })();
@@ -1084,6 +1127,9 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 
   document.addEventListener('keydown', function(e){
     var k = e.key;
+    /* con el foco en el deslizador, las flechas ajustan el volumen, no la lámina */
+    if (e.target && e.target.id === 'volRange' &&
+        (k === 'ArrowLeft' || k === 'ArrowRight' || k === 'ArrowUp' || k === 'ArrowDown')) return;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ' || k === 'Enter'){ e.preventDefault(); go(i + 1); }
     else if (k === 'ArrowLeft' || k === 'PageUp'){ e.preventDefault(); go(i - 1); }
     else if (k === 'Home'){ e.preventDefault(); go(0); }
@@ -1098,6 +1144,7 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 
   var lock = 0;
   window.addEventListener('wheel', function(e){
+    if (volOpen && e.target && e.target.closest && e.target.closest('.volpop')) return;
     var t = Date.now();
     if (t - lock < 700 || Math.abs(e.deltaY) < 24) return;
     lock = t;
