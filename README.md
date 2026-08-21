@@ -6,6 +6,7 @@ Presentación HTML en formato **16:9** para el ejercicio de análisis de persona
 **Politécnico Grancolombiano** — Institución Universitaria
 **Asignatura:** Publicidad 2 · Tercer semestre
 **Modalidad:** Presencial · Viernes nocturno
+**Docente:** Rudiger Stuart González Preciado
 
 **Integrantes:** Mariana Pinzón · Mariana Silva · William Fonseca
 
@@ -28,8 +29,12 @@ Abrir `index.html` en cualquier navegador moderno, o visitarla publicada con Git
 | Imprimir o exportar a PDF | `P` |
 | Volumen de la música | Clic en el icono de bocina → barra deslizante |
 
-La barra de navegación inferior se oculta sola a los 2,6 s para que la lámina quede
-limpia al proyectar; reaparece con cualquier movimiento del mouse o del teclado.
+La barra de control (lámina actual, volumen y flechas) está **siempre visible** en
+una franja propia debajo de la lámina: el escenario 16:9 se escala dejándole ese
+espacio, así que nunca se monta sobre el pie de lámina.
+
+En pantalla completa el puntero del mouse se oculta tras un segundo sin moverse y
+reaparece en cuanto se mueve.
 
 ### Música
 
@@ -40,8 +45,7 @@ autoplay con sonido hasta que hay un gesto del usuario.
 
 Junto al número de lámina hay un único botón de bocina; al pulsarlo se despliega
 hacia arriba una barra vertical para graduar el volumen libremente (0–100 %). Se
-cierra al hacer clic afuera o con `Esc`, y mientras está abierta la barra inferior
-no se auto-oculta.
+cierra al hacer clic afuera o con `Esc`.
 
 Para exportar a PDF: `P` → destino *Guardar como PDF* → orientación horizontal,
 márgenes *Ninguno* y activar *Gráficos de fondo*.

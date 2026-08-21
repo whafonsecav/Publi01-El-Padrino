@@ -53,7 +53,10 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   overflow:hidden; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
 
 /* ---------- ESCENARIO 16:9 ---------- */
-.viewport{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+/* el escenario vive por encima de la barra de control: así el pie de lámina
+   nunca queda tapado y los controles siempre se ven */
+.viewport{position:fixed; inset:0 0 var(--hudh,52px) 0;
+  display:flex; align-items:center; justify-content:center;
   background:radial-gradient(120% 90% at 50% 0%, #16110b 0%, #080605 55%, #000 100%)}
 .stage{position:relative; width:1600px; height:900px; flex:0 0 auto;
   transform:scale(var(--k)); transform-origin:center center;
@@ -225,12 +228,15 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 .team .k{font-size:9.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--dim-2); font-weight:600}
 .team .names{display:flex; align-items:center; gap:22px; flex-wrap:wrap; justify-content:center}
 .team .names b{font-family:var(--f-serif); font-size:27px; font-weight:500; color:var(--cream); letter-spacing:.02em}
-.cover-logo{display:flex; align-items:center; gap:18px}
-.cover-logo img{height:62px; opacity:.96}
-.cover-logo .t{display:flex; flex-direction:column; gap:5px; padding-left:18px;
+.cover-logo{display:flex; align-items:center; gap:20px}
+.cover-logo img{height:64px; opacity:.96}
+.cover-logo .t{display:flex; flex-direction:column; gap:9px; padding-left:20px;
   border-left:1px solid rgba(201,162,74,.34)}
-.cover-logo .t b{font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--cream); font-weight:600}
-.cover-logo .t span{font-size:9.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--dim-2)}
+.cover-logo .t b{font-family:var(--f-disp); font-size:23px; font-weight:700;
+  letter-spacing:.1em; color:var(--cream); line-height:1}
+.cover-logo .t span{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--dim); font-weight:500; line-height:1}
+.cover-logo .t span i{font-style:normal; color:var(--dim-2)}
 
 /* ============================================================
    L02 TRAMA
@@ -398,13 +404,15 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 /* ============================================================
    HUD
    ============================================================ */
+/* barra de control siempre visible, en su propia franja bajo la lámina */
 .hud{position:fixed; z-index:200; left:0; right:0; bottom:0; pointer-events:none;
-  font-family:var(--f-ui); opacity:0; transform:translateY(8px);
-  transition:opacity .45s var(--ease), transform .45s var(--ease)}
-.hud.show{opacity:1; transform:none}
+  font-family:var(--f-ui)}
 .hud-in{display:flex; align-items:center; justify-content:space-between; gap:20px;
-  padding:14px 26px 16px; pointer-events:auto;
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
+  padding:13px 26px 14px; pointer-events:auto;
+  background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.9))}
+
+/* en pantalla completa el cursor se esconde tras un segundo quieto */
+body.hide-cursor, body.hide-cursor *{cursor:none !important}
 .dots{display:flex; align-items:center; gap:7px}
 .dots button{width:30px; height:3px; border:0; padding:0; cursor:pointer;
   background:rgba(244,236,218,.22); transition:background .3s, width .3s}
@@ -534,7 +542,7 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
     <div class="head">
       <div class="cover-logo" data-anim="down" style="--d:.1s">
         <img src="assets/logo/politecnico-w.png" alt="Politécnico Grancolombiano">
-        <div class="t"><b>Publicidad 2</b><span>Institución Universitaria</span></div>
+        <div class="t"><b>Publicidad 2</b><span><i>Docente ·</i> Rudiger Stuart González Preciado</span></div>
       </div>
       <div class="head-r" data-anim="down" style="--d:.18s">
         <div class="brandline">
@@ -917,7 +925,7 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
     <div class="head">
       <div class="cover-logo" data-anim="down" style="--d:.1s">
         <img src="assets/logo/politecnico-w.png" alt="Politécnico Grancolombiano">
-        <div class="t"><b>Publicidad 2</b><span>Institución Universitaria</span></div>
+        <div class="t"><b>Publicidad 2</b><span><i>Docente ·</i> Rudiger Stuart González Preciado</span></div>
       </div>
       <div class="head-r" data-anim="down" style="--d:.18s">
         <div class="brandline">
@@ -1000,29 +1008,40 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   var i = 0;
   var pad = function(n){ return (n < 10 ? '0' : '') + n; };
 
-  /* escala el escenario 1600x900 al viewport */
+  /* Escala el escenario 1600x900 dejando libre la franja de la barra de
+     control, de modo que el pie de lámina nunca quede debajo de ella. */
+  var root  = document.documentElement;
+  var hudIn = document.querySelector('.hud-in');
   function fit(){
-    var k = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
-    document.documentElement.style.setProperty('--k', k);
+    var hudH = Math.ceil(hudIn.getBoundingClientRect().height) || 52;
+    root.style.setProperty('--hudh', hudH + 'px');
+    var k = Math.min(window.innerWidth / 1600, (window.innerHeight - hudH) / 900);
+    root.style.setProperty('--k', Math.max(k, 0.1));
   }
   window.addEventListener('resize', fit, {passive:true});
   fit();
 
-  /* HUD con auto-ocultado: la lámina queda limpia al proyectar */
-  var hud = document.querySelector('.hud'), hudT = 0;
-  function wake(){
-    hud.classList.add('show');
-    clearTimeout(hudT);
-    hudT = setTimeout(function(){
-      if (!volOpen) hud.classList.remove('show');   // no se oculta con el volumen abierto
-    }, 2600);
+  /* En pantalla completa el cursor desaparece si no se mueve durante 1 s.
+     Se cubre tanto la API de pantalla completa como F11, que no la dispara. */
+  var curT = 0;
+  function isFull(){
+    return !!(document.fullscreenElement || document.webkitFullscreenElement) ||
+           (window.innerHeight >= screen.height - 2 && window.innerWidth >= screen.width - 2);
   }
-  ['mousemove','mousedown','keydown','wheel','touchstart'].forEach(function(ev){
-    window.addEventListener(ev, wake, {passive:true});
+  function cursorWake(){
+    document.body.classList.remove('hide-cursor');
+    clearTimeout(curT);
+    if (isFull()) curT = setTimeout(function(){
+      document.body.classList.add('hide-cursor');
+    }, 1000);
+  }
+  ['mousemove','mousedown','wheel','touchstart'].forEach(function(ev){
+    window.addEventListener(ev, cursorWake, {passive:true});
   });
-  hud.addEventListener('mouseenter', function(){ clearTimeout(hudT); hud.classList.add('show'); });
-  hud.addEventListener('mouseleave', wake);
-  wake();
+  document.addEventListener('fullscreenchange', cursorWake);
+  document.addEventListener('webkitfullscreenchange', cursorWake);
+  window.addEventListener('resize', cursorWake, {passive:true});
+  cursorWake();
 
   /* ---------- MÚSICA DE FONDO ----------
      Los navegadores bloquean el autoplay con sonido, así que arranca en la
