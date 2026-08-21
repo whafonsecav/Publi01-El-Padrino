@@ -285,9 +285,11 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 .demo .panel{padding:22px 24px 20px; display:flex; flex-direction:column}
 .demo .v{margin-top:auto; font-family:var(--f-disp); font-weight:800; font-size:42px;
   line-height:1; letter-spacing:.01em; color:var(--gold-hi)}
-.demo .v.n{font-size:76px; line-height:.82; letter-spacing:-.03em}
+.demo .v.n{font-size:58px; line-height:.84; letter-spacing:-.03em}
+.demo .agarrow{width:24px; height:16px; stroke:var(--bronze); stroke-width:2; fill:none;
+  stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; margin:0 2px}
 .demo .v.sm{font-size:29px; line-height:1.12}
-.demo .row{margin-top:auto; display:flex; align-items:baseline; gap:12px}
+.demo .row{margin-top:auto; display:flex; align-items:center; gap:10px}
 .demo .row .v{margin-top:0}
 .demo .lb,.pnl-hd .lb{color:var(--dim)}
 .demo .u{font-family:var(--f-disp); font-weight:700; font-size:18px; letter-spacing:.16em; color:var(--gold-2)}
@@ -316,40 +318,75 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 /* ============================================================
    L04 ESCENARIO
    ============================================================ */
-#s4 .body{justify-content:center; gap:26px; padding-bottom:6px}
-#s4 .panel{padding:44px 48px 46px}
-.pnl-hd{display:flex; align-items:center; gap:15px; margin-bottom:14px}
-.pnl-hd .ico{color:var(--gold-2)}
-.yrs{display:flex; align-items:center; gap:36px}
-.yrs .y{font-family:var(--f-disp); font-weight:900; font-size:174px; line-height:.82; letter-spacing:-.035em}
-.yrs .mid{flex:1; position:relative; height:118px}
-.yrs .mid .lnwrap{position:absolute; left:0; right:0; top:54px;
-  display:flex; align-items:center; gap:10px}
-.yrs .mid .ln{flex:1; height:3px; transform-origin:left;
-  background:linear-gradient(90deg,var(--gold-hi),var(--gold-2) 40%,var(--bronze))}
-.tip{width:14px; height:16px; stroke:currentColor; stroke-width:2.2; fill:none;
-  stroke-linecap:round; stroke-linejoin:round; color:var(--bronze); flex:0 0 auto}
-.pill{position:absolute; left:50%; top:0; transform:translateX(-50%);
-  font-family:var(--f-disp); font-size:15px; font-weight:700; letter-spacing:.22em;
-  text-transform:uppercase; color:#17100a; padding:8px 22px 7px; white-space:nowrap;
-  background:linear-gradient(148deg,var(--gold-hi),var(--gold-2) 44%,var(--bronze));
-  box-shadow:0 6px 22px -8px rgba(201,162,74,.7)}
-.yrs .mid .ticks{position:absolute; left:0; right:0; top:84px; display:flex; justify-content:space-between}
-.yrs .mid .ticks i{width:1px; height:12px; background:rgba(201,162,74,.34); display:block}
-.yrs .mid .ticks i.maj{height:22px; width:2px; background:rgba(201,162,74,.62)}
+#s4 .body{padding-top:6px; padding-bottom:2px}
 
-.route{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:40px}
-.pl{display:flex; align-items:center; gap:20px}
-.pl .pin{color:var(--gold-2)}
-.pl b{display:block; font-family:var(--f-disp); font-weight:800; font-size:58px;
-  line-height:1; letter-spacing:.02em; color:var(--gold-hi)}
-.pl span{display:block; font-family:var(--f-serif); font-style:italic; font-size:21px;
-  color:var(--dim); margin-top:8px}
-.pl.two .pin{color:var(--copper-2)} .pl.two b{color:var(--copper-hi)}
-.arc{display:flex; align-items:center; gap:10px}
-.arc .dash{flex:1; height:2px; transform-origin:left;
-  background:repeating-linear-gradient(90deg, rgba(224,190,113,.9) 0 8px, transparent 8px 18px)}
-.arc .tip{color:var(--copper-2)}
+/* --- eje temporal proporcional: cada año cae en su posición real dentro de la
+       década, así se ve que 1945 concentra la mitad de las escenas --- */
+.axis-hd{display:flex; align-items:center; justify-content:space-between; gap:24px}
+.axis-hd .g{display:flex; align-items:center; gap:12px}
+.axis-hd .ico{color:var(--gold-2); width:23px; height:23px}
+.rail{position:relative; height:84px; margin:0 54px}
+.rail .line{position:absolute; left:0; right:0; top:55px; height:2px; transform-origin:left;
+  background:linear-gradient(90deg, var(--bronze), var(--gold-2) 50%, var(--bronze));
+  transform:scaleX(0); transition:transform 1.5s var(--ease); transition-delay:.35s}
+.is-active .rail .line{transform:scaleX(1)}
+.mk{position:absolute; top:0; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:7px; white-space:nowrap}
+.mk b{font-family:var(--f-disp); font-weight:900; font-size:29px; line-height:1.14; letter-spacing:-.01em}
+.mk .nd{width:28px; height:28px; display:grid; place-items:center}
+.mk .nd i{width:14px; height:14px; display:block; transform:rotate(45deg) scale(0);
+  background:linear-gradient(148deg,var(--gold-hi),var(--bronze));
+  box-shadow:0 0 0 6px var(--noir), 0 0 24px rgba(201,162,74,.6);
+  transition:transform .55s var(--ease); transition-delay:var(--d,.8s)}
+.is-active .mk .nd i{transform:rotate(45deg) scale(1)}
+.mk.big .nd i{width:26px; height:26px;
+  box-shadow:0 0 0 6px var(--noir), 0 0 34px rgba(224,190,113,.85)}
+.mk em{font-style:normal; font-size:9px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--dim-2); font-weight:600}
+.mk.big em{color:var(--gold-2)}
+
+/* --- los ocho escenarios; el relleno del panel codifica la zona --- */
+.scns{display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:minmax(0,1fr);
+  gap:17px; flex:1; min-height:0; margin-top:10px}
+.scn{padding:16px 18px 15px; display:flex; flex-direction:column}
+.scn .hd{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+.scn .hd .ico{color:var(--gold-2); width:26px; height:26px}
+.scn .yb{font-family:var(--f-disp); font-weight:700; font-size:13.5px; letter-spacing:.12em;
+  color:#17100a; line-height:1; padding:5px 9px 4px;
+  background:linear-gradient(148deg,var(--gold-2),var(--bronze))}
+.scn .zn{font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; line-height:1.5; min-height:27px}
+.scn h4{margin:6px 0 0; font-family:var(--f-disp); font-weight:700; font-size:17.5px;
+  line-height:1.2; letter-spacing:.015em; color:var(--gold-hi)}
+.scn .hr{width:30px; height:1px; margin:8px 0 8px;
+  background:linear-gradient(90deg,var(--gold),transparent)}
+.scn p{margin:0; font-family:var(--f-serif); font-size:16.2px; line-height:1.33; color:var(--text)}
+.scn.copper .hd .ico,.scn.copper .zn{color:var(--copper-2)}
+.scn.copper .yb{background:linear-gradient(148deg,var(--copper-2),#8e2f18); color:#1c0c06}
+.scn.copper h4{color:var(--copper-hi)}
+.scn.copper .hr{background:linear-gradient(90deg,var(--copper-2),transparent)}
+.scn.deep .hd .ico,.scn.deep .zn{color:var(--dim)}
+.scn.deep .yb{background:linear-gradient(148deg,var(--dim),#4a3f2c)}
+
+/* --- resumen: rango de años y lugares únicos por ciudad --- */
+.esc-sum{display:grid; grid-template-columns:auto 1px 1fr; gap:28px; align-items:center;
+  margin-top:12px; padding:10px 22px}
+.esc-sum .vr{align-self:stretch;
+  background:linear-gradient(180deg,transparent,rgba(201,162,74,.32),transparent)}
+.sum-l{display:flex; flex-direction:column; gap:4px}
+.sum-l b{font-family:var(--f-disp); font-weight:900; font-size:26px; line-height:1.14; letter-spacing:.01em}
+.sum-l .meta{font-size:9px; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--dim-2); font-weight:600}
+.sum-r{display:grid; grid-template-columns:1.95fr 1fr; gap:24px}
+.sum-city .cn{display:flex; align-items:baseline; gap:9px; margin-bottom:4px}
+.sum-city .cn span{font-size:9.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--gold-2); font-weight:700}
+.sum-city .cn em{font-style:normal; font-size:8.5px; letter-spacing:.13em; text-transform:uppercase;
+  color:#17100a; background:linear-gradient(148deg,var(--gold-2),var(--bronze));
+  padding:3px 7px 2px; font-weight:700}
+.sum-city p{margin:0; font-family:var(--f-serif); font-size:15.6px; line-height:1.34; color:var(--text)}
+.sum-city.b .cn span{color:var(--copper-hi)}
+.sum-city.b .cn em{background:linear-gradient(148deg,var(--copper-2),#8e2f18); color:#1c0c06}
 
 /* ============================================================
    L05 MOTIVACIÓN
@@ -524,6 +561,13 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
   <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.9 6.4.8-4.7 4.4 1.2 6.3L12 17.4 6.3 20.4l1.2-6.3-4.7-4.4 6.4-.8z"/></symbol>
   <symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 21.6c3.6 0 6.4-2.6 6.4-5.9 0-4.4-4.6-6.2-4-13.3-3 1.4-5 4-5 7.2 0 1 .2 1.9.6 2.7-1-.3-1.9-1.1-2.4-2.2-1.2 1.6-2 3.5-2 5.6 0 3.3 2.8 5.9 6.4 5.9z"/></symbol>
   <symbol id="i-rose" viewBox="0 0 24 24"><path d="M12 11.6c2.4 0 4.2-1.7 4.2-3.8S14.4 4 12 4 7.8 5.7 7.8 7.8s1.8 3.8 4.2 3.8z"/><path d="M9.6 8.4c0-1.3 1-2.3 2.4-2.3s2.4 1 2.4 2.3"/><path d="M12 11.6V21"/><path d="M12 15.4c-1.6-1.8-3.6-2-5.4-1.4 1 2 3.2 3 5.4 2.6M12 18c1.6-1.8 3.6-2 5.4-1.4-1 2-3.2 3-5.4 2.6"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.4 10.6 12 3.4l8.6 7.2V20a1 1 0 0 1-1 1h-5v-6.4H10.4V21h-5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1.4"/><path d="M7.4 6v12M16.6 6v12M3 10.2h4.4M3 13.8h4.4M16.6 10.2H21M16.6 13.8H21"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.6 8h12.8l-1.1 12.4H6.7z"/><path d="M9.2 8V6.2a2.8 2.8 0 0 1 5.6 0V8"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.4 3.4h3.2l1.5 4-2.1 1.5a10.4 10.4 0 0 0 6.1 6.1l1.5-2.1 4 1.5v3.2a1.9 1.9 0 0 1-2 1.9C11 19.4 4.6 13 4.6 5.4a1.9 1.9 0 0 1 1.8-2z"/></symbol>
+  <symbol id="i-gate" viewBox="0 0 24 24"><path d="M4 21V7.6L12 3l8 4.6V21"/><path d="M9.4 21v-6.6a2.6 2.6 0 0 1 5.2 0V21"/></symbol>
+  <symbol id="i-church" viewBox="0 0 24 24"><path d="M12 2.2v4.6M10 4.4h4"/><path d="M5.4 21V11.4L12 7.2l6.6 4.2V21"/><path d="M10 21v-4.4a2 2 0 0 1 4 0V21"/></symbol>
+  <symbol id="i-door" viewBox="0 0 24 24"><rect x="6.2" y="3" width="11.6" height="18" rx="1.2"/><path d="M14.4 12h.01" stroke-width="2.4"/></symbol>
   <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
   <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9.4h3.2L12 5.2v13.6L7.2 14.6H4z"/><path d="M15.6 9.2a4 4 0 0 1 0 5.6M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></symbol>
@@ -638,17 +682,17 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
         <article class="panel amber" data-anim="up" style="--d:.68s">
           <span class="shine"></span>
           <div class="act-hd"><span class="n">01</span><h3 class="gold-text">INTRO</h3></div>
-          <p>Una mujer joven, carismática, culta y moderna; profesa un profundo amor hacia Michael Corleone; a través de él, tiene su primer acercamiento a un mundo de ilegalidad del cual siempre fue ajena.</p>
+          <p>Una mujer joven, carismática, culta y moderna; profesa un profundo amor hacia Michael Corleone; a través de él, tiene su primer acercamiento a un mundo de ilegalidad al cual siempre fue ajena.</p>
         </article>
         <article class="panel" data-anim="up" style="--d:.78s">
           <span class="shine"></span>
           <div class="act-hd"><span class="n">02</span><h3 class="gold-text">NUDO</h3></div>
-          <p>La noticia del atentado a Vito Corleone, publicada en el periódico, provoca que Michael se marche, dejándola atrás. Ella deberá lidiar con este repentino vacío, debatiéndose constantemente entre mantener la esperanza de encontrarlo o renunciar definitivamente a su relación.</p>
+          <p>La noticia del atentado contra Vito Corleone, publicada en el periódico, provoca que Michael se marche, dejándola atrás. Ella deberá lidiar con este repentino vacío, debatiéndose constantemente entre mantener la esperanza de encontrarlo y renunciar definitivamente a su relación.</p>
         </article>
         <article class="panel copper" data-anim="up" style="--d:.88s">
           <span class="shine"></span>
           <div class="act-hd"><span class="n">03</span><h3 class="copper-text">DESENLACE</h3></div>
-          <p>Luego de una larga espera, su amado regresa, y a pesar de su dolor por el abandono, lo perdona, se casan, forman un hogar y ella acepta que su esposo ya no es el mismo hombre del que se enamoró al inicio, aceptando que ahora es el nuevo líder de la mafia.</p>
+          <p>Luego de una larga espera, su amado regresa, y a pesar de su dolor por el abandono, lo perdona, se casan, forman un hogar y ella acepta que su esposo ya no es el mismo hombre del que se enamoró al inicio y asume que ahora es el nuevo líder de la mafia.</p>
         </article>
       </div>
     </div>
@@ -686,8 +730,13 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
         <article class="panel amber" data-anim="up" style="--d:.27s">
           <span class="shine"></span>
           <span class="lb">Edad</span>
-          <span class="row"><span class="v n gold-text">21</span><span class="u">AÑOS</span></span>
-          <span class="cap">Aproximadamente</span>
+          <span class="row">
+            <span class="v n gold-text">21</span>
+            <svg class="agarrow" viewBox="0 0 24 16" aria-hidden="true"><path d="M2 8h17M14 2l6 6-6 6"/></svg>
+            <span class="v n gold-text">31</span>
+            <span class="u">AÑOS</span>
+          </span>
+          <span class="cap">Aproximadamente · de 1945 a 1955</span>
         </article>
         <article class="panel deep" data-anim="up" style="--d:.34s">
           <span class="lb">NSE</span>
@@ -707,8 +756,8 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
           <span class="chip"><span class="dt"></span>Actitudes / Opiniones</span>
           <div class="plist">
             <div class="pli"><span class="dt"></span><p>Mujer curiosa por saber más sobre la familia de su amado.</p></div>
-            <div class="pli"><span class="dt"></span><p>Tenía afinidad con la legalidad y desagrado con la vida criminal.</p></div>
-            <div class="pli"><span class="dt"></span><p>Tenía esperanza y confianza en su amado, y su palabra.</p></div>
+            <div class="pli"><span class="dt"></span><p>Tenía afinidad con la legalidad y desagrado por la vida criminal.</p></div>
+            <div class="pli"><span class="dt"></span><p>Tenía esperanza y confianza en su amado y en su palabra.</p></div>
             <div class="pli"><span class="dt"></span><p>Una mujer paciente y determinada.</p></div>
             <div class="pli"><span class="dt"></span><p>Una mujer fiel a sus sentimientos.</p></div>
             <div class="pli"><span class="dt"></span><p>Cree en el valor de formar una familia y mantener un hogar.</p></div>
@@ -761,49 +810,124 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
     </div>
 
     <div class="body">
-      <!-- CUANDO -->
-      <article class="panel amber" data-anim="rise" style="--d:.22s">
-        <span class="shine"></span>
-        <div class="pnl-hd"><svg class="ico md"><use href="#i-calendar"/></svg><span class="lb">Cuando</span></div>
-        <div class="yrs">
-          <span class="y gold-text">1945</span>
-          <span class="mid" aria-hidden="true">
-            <span class="pill" data-anim="scale" style="--d:.85s">10 años</span>
-            <span class="lnwrap">
-              <span class="ln" data-anim="grow" style="--d:.5s"></span>
-              <svg class="tip" data-anim="scale" style="--d:1.15s" viewBox="0 0 14 16"><path d="M3 2l8 6-8 6"/></svg>
-            </span>
-            <span class="ticks">
-              <i class="maj"></i><i></i><i></i><i></i><i></i>
-              <i class="maj"></i><i></i><i></i><i></i><i></i><i class="maj"></i>
-            </span>
-          </span>
-          <span class="y gold-text">1955</span>
-        </div>
-      </article>
+      <!-- eje temporal: 1945 - 1955, cada año en su posición real -->
+      <div class="axis-hd" data-anim="up" style="--d:.18s">
+        <span class="g"><svg class="ico"><use href="#i-calendar"/></svg><span class="lb">Cuándo</span></span>
+        <span class="chip"><span class="dt"></span>1945 &ndash; 1955 · 10 años · 8 escenas</span>
+      </div>
 
-      <!-- DONDE -->
-      <article class="panel deep" data-anim="rise" style="--d:.34s">
-        <div class="pnl-hd"><svg class="ico md"><use href="#i-globe"/></svg><span class="lb">Donde</span></div>
-        <div class="route">
-          <div class="pl">
-            <svg class="ico xl pin"><use href="#i-pin"/></svg>
-            <span><b>NEW YORK</b><span>Principalmente</span></span>
+      <div class="rail" data-anim="up" style="--d:.24s">
+        <span class="line" aria-hidden="true"></span>
+        <span class="mk big" style="left:0%">
+          <b class="gold-text">1945</b><span class="nd"><i style="--d:.8s"></i></span><em>4 escenas</em></span>
+        <span class="mk" style="left:10%">
+          <b class="gold-text">1946</b><span class="nd"><i style="--d:.92s"></i></span><em>1 escena</em></span>
+        <span class="mk" style="left:50%">
+          <b class="gold-text">1950</b><span class="nd"><i style="--d:1.04s"></i></span><em>1 escena</em></span>
+        <span class="mk" style="left:90%">
+          <b class="gold-text">1954</b><span class="nd"><i style="--d:1.16s"></i></span><em>1 escena</em></span>
+        <span class="mk" style="left:100%">
+          <b class="gold-text">1955</b><span class="nd"><i style="--d:1.28s"></i></span><em>1 escena</em></span>
+      </div>
+
+      <!-- los ocho escenarios -->
+      <div class="scns">
+        <article class="scn panel" data-anim="rise" style="--d:.34s">
+          <span class="shine"></span>
+          <div class="hd"><svg class="ico"><use href="#i-home"/></svg><span class="yb">1945</span></div>
+          <span class="zn">Nueva York · Long Island / Staten Island</span>
+          <h4>Mansión Corleone</h4>
+          <span class="hr"></span>
+          <p>Kay asiste a la boda de Connie como la novia universitaria de Michael y conoce las historias de su familia.</p>
+        </article>
+
+        <article class="scn panel amber" data-anim="rise" style="--d:.4s">
+          <span class="shine"></span>
+          <div class="hd"><svg class="ico"><use href="#i-film"/></svg><span class="yb">1945</span></div>
+          <span class="zn">Nueva York · Manhattan</span>
+          <h4>Teatro Radio City Music Hall</h4>
+          <span class="hr"></span>
+          <p>Kay y Michael salen de ver una película durante sus vacaciones de invierno.</p>
+        </article>
+
+        <article class="scn panel amber" data-anim="rise" style="--d:.46s">
+          <span class="shine"></span>
+          <div class="hd"><svg class="ico"><use href="#i-bag"/></svg><span class="yb">1945</span></div>
+          <span class="zn">Nueva York · Manhattan · Quinta Avenida</span>
+          <h4>Tienda Best &amp; Co.</h4>
+          <span class="hr"></span>
+          <p>Mientras caminan con las compras navideñas, descubren en el periódico el atentado contra Don Vito.</p>
+        </article>
+
+        <article class="scn panel amber" data-anim="rise" style="--d:.52s">
+          <span class="shine"></span>
+          <div class="hd"><svg class="ico"><use href="#i-phone"/></svg><span class="yb">1945</span></div>
+          <span class="zn">Nueva York · Manhattan</span>
+          <h4>Hotel St. Regis</h4>
+          <span class="hr"></span>
+          <p>Michael llama a Kay por teléfono desde su habitación para despedirse antes de ir a proteger a su padre.</p>
+        </article>
+
+        <article class="scn panel" data-anim="rise" style="--d:.58s">
+          <span class="shine"></span>
+          <div class="hd"><svg class="ico"><use href="#i-gate"/></svg><span class="yb">1946</span></div>
+          <span class="zn">Nueva York · Long Island / Staten Island</span>
+          <h4>Entrada de la Mansión Corleone</h4>
+          <span class="hr"></span>
+          <p>Tras la huida de Michael a Sicilia, Kay intenta dejarle una carta a través de Tom Hagen, pero este la rechaza.</p>
+        </article>
+
+        <article class="scn panel copper" data-anim="rise" style="--d:.64s">
+          <span class="shine"></span>
+          <div class="hd"><svg class="ico"><use href="#i-teacher"/></svg><span class="yb">1950</span></div>
+          <span class="zn">Condado de Marin, California · Simulando Nueva Inglaterra</span>
+          <h4>Escuela Ross</h4>
+          <span class="hr"></span>
+          <p>Michael reaparece tras su exilio y busca a Kay en su lugar de trabajo para pedirle que se casen.</p>
+        </article>
+
+        <article class="scn panel amber" data-anim="rise" style="--d:.7s">
+          <span class="shine"></span>
+          <div class="hd"><svg class="ico"><use href="#i-church"/></svg><span class="yb">1954</span></div>
+          <span class="zn">Nueva York · Manhattan</span>
+          <h4>Antigua Catedral de San Patricio</h4>
+          <span class="hr"></span>
+          <p>Kay sostiene al bebé en el altar durante el bautizo, mientras los enemigos de Michael son ejecutados.</p>
+        </article>
+
+        <article class="scn panel deep" data-anim="rise" style="--d:.76s">
+          <span class="shine"></span>
+          <div class="hd"><svg class="ico"><use href="#i-door"/></svg><span class="yb">1955</span></div>
+          <span class="zn">Nueva York · Estudios de filmación</span>
+          <h4>Despacho de Michael</h4>
+          <span class="hr"></span>
+          <p>Michael le miente a Kay negando haber matado a Carlo, justo antes de que le cierren la puerta en la cara.</p>
+        </article>
+      </div>
+
+      <!-- resumen: rango y lugares únicos por ciudad -->
+      <div class="esc-sum panel deep" data-anim="up" style="--d:.84s">
+        <div class="sum-l">
+          <span class="lb">Dónde · resumen</span>
+          <b class="gold-text">1945 &rarr; 1955</b>
+          <span class="meta">10 años · 8 escenas · 7 lugares únicos</span>
+        </div>
+        <span class="vr" aria-hidden="true"></span>
+        <div class="sum-r">
+          <div class="sum-city">
+            <span class="cn"><span>Nueva York</span><em>6 lugares</em></span>
+            <p>Mansión Corleone · Teatro Radio City Music Hall · Tienda Best &amp; Co. · Hotel St. Regis · Antigua Catedral de San Patricio · Despacho de Michael</p>
           </div>
-          <div class="arc" aria-hidden="true">
-            <span class="dash" data-anim="grow" style="--d:.7s"></span>
-            <svg class="tip" data-anim="scale" style="--d:1.3s" viewBox="0 0 14 16"><path d="M3 2l8 6-8 6"/></svg>
-          </div>
-          <div class="pl two">
-            <svg class="ico xl pin"><use href="#i-pin"/></svg>
-            <span><b>NEW HAMPSHIRE</b><span>Luego · (Massachusetts)</span></span>
+          <div class="sum-city b">
+            <span class="cn"><span>Condado de Marin, California</span><em>1 lugar</em></span>
+            <p>Escuela Ross</p>
           </div>
         </div>
-      </article>
+      </div>
     </div>
 
     <div class="foot">
-      <span class="fl"><span class="fline"></span>Escenario · Cuando y donde</span>
+      <span class="fl"><span class="fline"></span>Escenario · Cuándo y dónde</span>
       <span>Lámina 04</span>
     </div>
   </section>
@@ -835,7 +959,7 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
             <div class="egrid">
               <div class="eit">
                 <span class="nm"><svg class="ico"><use href="#i-smile"/></svg><h4>ALEGRÍA</h4></span>
-                <p>Cuando están de turista por Manhattan y alegría por su hijo.</p>
+                <p>Cuando están de turistas por Manhattan y por su hijo.</p>
               </div>
               <div class="eit">
                 <span class="nm"><svg class="ico"><use href="#i-tear"/></svg><h4>TRISTEZA</h4></span>
@@ -843,7 +967,7 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
               </div>
               <div class="eit">
                 <span class="nm"><svg class="ico"><use href="#i-surprise"/></svg><h4>SORPRESA</h4></span>
-                <p>Al enterarse de los negocios de la familia de Michael. Cuando vuelve Michael, cuando le propone matrimonio.</p>
+                <p>Al enterarse de los negocios de la familia de Michael, cuando él vuelve y cuando le propone matrimonio.</p>
               </div>
             </div>
           </article>
