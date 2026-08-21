@@ -26,9 +26,18 @@ Abrir `index.html` en cualquier navegador moderno, o visitarla publicada con Git
 | Primera / última | `Inicio` / `Fin` |
 | Pantalla completa | `F` |
 | Imprimir o exportar a PDF | `P` |
+| Volumen de la música | Botones `−` / `+` junto al número de lámina |
+| Silenciar la música | Icono de bocina |
 
 La barra de navegación inferior se oculta sola a los 2,6 s para que la lámina quede
 limpia al proyectar; reaparece con cualquier movimiento del mouse o del teclado.
+
+### Música
+
+El tema de la película (`assets/music/tema-el-padrino.mp3`) suena en bucle al 50 %
+de volumen. Arranca en la primera interacción —un clic, una tecla, la rueda o un
+toque— porque los navegadores bloquean el autoplay con sonido hasta que hay un
+gesto del usuario.
 
 Para exportar a PDF: `P` → destino *Guardar como PDF* → orientación horizontal,
 márgenes *Ninguno* y activar *Gráficos de fondo*.
@@ -76,6 +85,7 @@ Derivada del póster de la película:
 index.html                 Presentación completa (CSS + JS + iconos SVG en línea)
 assets/img/                Retratos del personaje, recortados y virados a la paleta (WebP)
 assets/logo/               Logo del Politécnico Grancolombiano
+assets/music/              Tema de la película, de fondo en bucle
 Ejercicio El Padrino.xlsx  Fuente del contenido
 ```
 

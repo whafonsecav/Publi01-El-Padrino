@@ -384,9 +384,16 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   background:rgba(5,4,3,.72); border-left:1px solid rgba(201,162,74,.24);
   border-right:1px solid rgba(196,80,47,.24)}
 .vs .o em{font-family:var(--f-serif); font-style:italic; font-size:19px; color:var(--gold-2)}
-.cexp{margin-top:auto; padding-top:18px; border-top:1px solid rgba(201,162,74,.20)}
-.cexp p{margin:0; font-family:var(--f-serif); font-size:20px; line-height:1.4; color:var(--text)}
-.cexp p em{color:var(--gold-2); font-style:italic}
+/* la cita es la protagonista de la tarjeta: ocupa el espacio restante */
+.cexp{flex:1; display:flex; flex-direction:column; justify-content:center;
+  margin-top:26px; padding-top:24px; border-top:1px solid rgba(201,162,74,.20)}
+.cexp .r{width:46px; height:2px; margin-bottom:20px;
+  background:linear-gradient(90deg,var(--gold-2),var(--bronze))}
+.cexp blockquote{margin:0; font-family:var(--f-serif); font-weight:400;
+  font-size:33px; line-height:1.3; letter-spacing:.004em; color:var(--gold-hi);
+  text-wrap:balance}
+.cexp blockquote em{font-style:italic; color:var(--gold-2)}
+.cexp .q{font-family:var(--f-disp); font-weight:700; color:var(--gold-2); font-size:1.1em}
 
 /* ============================================================
    HUD
@@ -412,6 +419,26 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 .nav button svg{width:15px; height:15px}
 .counter{font-family:var(--f-disp); font-size:13px; font-weight:700; letter-spacing:.16em; color:var(--dim)}
 .counter b{color:var(--gold-2)}
+
+/* control de volumen: discreto, junto al número de lámina */
+.vol{display:flex; align-items:center; gap:7px; margin-right:4px;
+  padding-right:14px; border-right:1px solid rgba(201,162,74,.18)}
+.vol button{width:26px; height:26px; display:grid; place-items:center; cursor:pointer;
+  background:none; border:1px solid transparent; color:var(--dim-2); padding:0;
+  transition:color .25s, border-color .25s, background .25s}
+.vol button:hover{color:var(--gold-2); border-color:rgba(201,162,74,.26); background:rgba(201,162,74,.08)}
+.vol button svg{width:15px; height:15px; stroke-width:1.6}
+.vol .sp svg{width:17px; height:17px}
+.vol.is-on .sp{color:var(--gold)}
+.vol .bars{display:flex; align-items:flex-end; gap:2.5px; height:13px}
+.vol .bars i{width:3px; height:100%; display:block; background:rgba(244,236,218,.16);
+  transition:background .25s}
+.vol .bars i.on{background:linear-gradient(180deg,var(--gold-2),var(--bronze))}
+.vol .bars i:nth-child(1){height:36%}
+.vol .bars i:nth-child(2){height:52%}
+.vol .bars i:nth-child(3){height:68%}
+.vol .bars i:nth-child(4){height:84%}
+.vol .bars i:nth-child(5){height:100%}
 .hint{font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:rgba(171,154,128,.5); font-weight:500}
 .progress{position:fixed; top:0; left:0; height:2px; z-index:210; width:0;
   background:linear-gradient(90deg,var(--bronze),var(--gold-2));
@@ -465,9 +492,14 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   <symbol id="i-rose" viewBox="0 0 24 24"><path d="M12 11.6c2.4 0 4.2-1.7 4.2-3.8S14.4 4 12 4 7.8 5.7 7.8 7.8s1.8 3.8 4.2 3.8z"/><path d="M9.6 8.4c0-1.3 1-2.3 2.4-2.3s2.4 1 2.4 2.3"/><path d="M12 11.6V21"/><path d="M12 15.4c-1.6-1.8-3.6-2-5.4-1.4 1 2 3.2 3 5.4 2.6M12 18c1.6-1.8 3.6-2 5.4-1.4-1 2-3.2 3-5.4 2.6"/></symbol>
   <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9.4h3.2L12 5.2v13.6L7.2 14.6H4z"/><path d="M15.6 9.2a4 4 0 0 1 0 5.6M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></symbol>
+  <symbol id="i-vol-off" viewBox="0 0 24 24"><path d="M4 9.4h3.2L12 5.2v13.6L7.2 14.6H4z"/><path d="M16.4 9.6l4.4 4.8M20.8 9.6l-4.4 4.8"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol>
 </svg>
 
 <div class="progress" id="bar"></div>
+<audio id="bgm" src="assets/music/tema-el-padrino.mp3" loop preload="auto"></audio>
 
 <div class="viewport">
 <div class="stage" id="stage">
@@ -843,7 +875,8 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
           </div>
 
           <div class="cexp">
-            <p>El dilema central de Kay radica en elegir entre el amor hacia Michael y sus principios morales <em>(legalidad y futuro)</em>.</p>
+            <span class="r" aria-hidden="true"></span>
+            <blockquote><span class="q">&ldquo;</span>El conflicto central de Kay radica en elegir entre el amor hacia Michael y sus principios morales <em>(legalidad y futuro)</em>.<span class="q">&rdquo;</span></blockquote>
           </div>
         </article>
       </div>
@@ -909,6 +942,13 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
     <div class="dots" id="dots" role="tablist" aria-label="Ir a lámina"></div>
     <span class="hint">← →  navegar · F pantalla completa · P imprimir</span>
     <div class="nav">
+      <div class="vol" id="vol">
+        <button class="sp" id="volMute" aria-label="Silenciar o reactivar la música" aria-pressed="false">
+          <svg class="ico"><use href="#i-vol" id="volIcon"/></svg></button>
+        <button id="volDown" aria-label="Bajar volumen"><svg class="ico"><use href="#i-minus"/></svg></button>
+        <span class="bars" id="volBars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <button id="volUp" aria-label="Subir volumen"><svg class="ico"><use href="#i-plus"/></svg></button>
+      </div>
       <span class="counter"><b id="cur">01</b> / <span id="tot">06</span></span>
       <button id="prev" aria-label="Lámina anterior"><svg class="ico"><use href="#i-arrow-l"/></svg></button>
       <button id="next" aria-label="Lámina siguiente"><svg class="ico"><use href="#i-arrow-r"/></svg></button>
@@ -952,6 +992,65 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
   hud.addEventListener('mouseenter', function(){ clearTimeout(hudT); hud.classList.add('show'); });
   hud.addEventListener('mouseleave', wake);
   wake();
+
+  /* ---------- MÚSICA DE FONDO ----------
+     Los navegadores bloquean el autoplay con sonido, así que arranca en la
+     primera interacción del usuario (cualquier clic, tecla, rueda o toque). */
+  (function music(){
+    var a = document.getElementById('bgm');
+    if (!a) return;
+    var volEl  = document.getElementById('vol');
+    var barsEl = document.getElementById('volBars');
+    var iconEl = document.getElementById('volIcon');
+    var muteB  = document.getElementById('volMute');
+    var STEP = 0.1, level = 0.5, muted = false, started = false;
+
+    a.volume = level;
+
+    function paint(){
+      var shown = muted ? 0 : level;
+      var lit = Math.round(shown * 5);
+      Array.prototype.forEach.call(barsEl.children, function(b, n){
+        b.classList.toggle('on', n < lit);
+      });
+      iconEl.setAttribute('href', (muted || shown === 0) ? '#i-vol-off' : '#i-vol');
+      muteB.setAttribute('aria-pressed', muted ? 'true' : 'false');
+      volEl.classList.toggle('is-on', !muted && shown > 0 && started);
+    }
+
+    function start(){
+      if (started) return;
+      var p = a.play();
+      if (p && p.catch) p.catch(function(){ started = false; });   // aún bloqueado: se reintenta
+      started = true;
+      paint();
+    }
+    ['pointerdown','keydown','wheel','touchstart'].forEach(function(ev){
+      window.addEventListener(ev, start, {passive:true});
+    });
+
+    function setLevel(v){
+      level = Math.max(0, Math.min(1, Math.round(v * 10) / 10));
+      if (level > 0) muted = false;
+      a.muted = muted;
+      a.volume = level;
+      paint();
+    }
+    document.getElementById('volUp').addEventListener('click', function(e){
+      e.stopPropagation(); setLevel(level + STEP); start();
+    });
+    document.getElementById('volDown').addEventListener('click', function(e){
+      e.stopPropagation(); setLevel(level - STEP); start();
+    });
+    muteB.addEventListener('click', function(e){
+      e.stopPropagation();
+      muted = !muted; a.muted = muted;
+      if (!muted && level === 0) setLevel(0.5);
+      paint(); start();
+    });
+
+    paint();
+  })();
 
   slides.forEach(function(s, n){
     var b = document.createElement('button');
