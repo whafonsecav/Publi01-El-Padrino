@@ -289,20 +289,22 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 .demo .agarrow{width:24px; height:16px; stroke:var(--bronze); stroke-width:2; fill:none;
   stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; margin:0 2px}
 .demo .v.sm{font-size:29px; line-height:1.12}
+.demo .v.nse{font-size:36px; white-space:nowrap}
 .demo .row{margin-top:auto; display:flex; align-items:center; gap:10px}
 .demo .row .v{margin-top:0}
 .demo .lb,.pnl-hd .lb{color:var(--dim)}
 .demo .u{font-family:var(--f-disp); font-weight:700; font-size:18px; letter-spacing:.16em; color:var(--gold-2)}
 .demo .cap{font-family:var(--f-serif); font-style:italic; font-size:17px; color:var(--dim); margin-top:5px}
 .meter{display:flex; align-items:flex-end; gap:6px; height:32px; margin-top:11px}
-.meter i{width:38px; display:block; border:1px solid rgba(201,162,74,.42);
+.meter i{width:30px; display:block; border:1px solid rgba(201,162,74,.42);
   background:rgba(201,162,74,.06); transform:scaleY(0); transform-origin:bottom;
   transition:transform .7s var(--ease)}
-.meter i:nth-child(1){height:44%; transition-delay:.55s}
-.meter i:nth-child(2){height:70%; transition-delay:.67s}
-.meter i:nth-child(3){height:100%; transition-delay:.79s;
+.meter i:nth-child(1){height:34%; transition-delay:.5s; background:rgba(201,162,74,.22)}
+.meter i:nth-child(2){height:56%; transition-delay:.6s; background:rgba(201,162,74,.34)}
+.meter i:nth-child(3){height:78%; transition-delay:.7s;
   background:linear-gradient(180deg,var(--gold-2),rgba(124,92,46,.35));
-  border-color:rgba(224,190,113,.7); box-shadow:0 0 26px -6px rgba(224,190,113,.7)}
+  border-color:rgba(224,190,113,.75); box-shadow:0 0 26px -6px rgba(224,190,113,.75)}
+.meter i:nth-child(4){height:100%; transition-delay:.8s}
 .is-active .meter i{transform:scaleY(1)}
 
 .cols{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:24px;
@@ -321,72 +323,81 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 #s4 .body{padding-top:6px; padding-bottom:2px}
 
 /* --- eje temporal proporcional: cada año cae en su posición real dentro de la
-       década, así se ve que 1945 concentra la mitad de las escenas --- */
+       década, así se ve que 1945 concentra la mitad de las escenas.
+       El margen lateral holgado evita que se corten los años de los extremos. --- */
 .axis-hd{display:flex; align-items:center; justify-content:space-between; gap:24px}
 .axis-hd .g{display:flex; align-items:center; gap:12px}
 .axis-hd .ico{color:var(--gold-2); width:23px; height:23px}
-.rail{position:relative; height:84px; margin:0 54px}
-.rail .line{position:absolute; left:0; right:0; top:55px; height:2px; transform-origin:left;
+.rail{position:relative; height:76px; margin:0 104px}
+.rail .line{position:absolute; left:0; right:0; top:50px; height:2px; transform-origin:left;
   background:linear-gradient(90deg, var(--bronze), var(--gold-2) 50%, var(--bronze));
-  transform:scaleX(0); transition:transform 1.5s var(--ease); transition-delay:.35s}
+  transform:scaleX(0); transition:transform 1.5s var(--ease); transition-delay:.3s}
 .is-active .rail .line{transform:scaleX(1)}
 .mk{position:absolute; top:0; transform:translateX(-50%);
-  display:flex; flex-direction:column; align-items:center; gap:7px; white-space:nowrap}
-.mk b{font-family:var(--f-disp); font-weight:900; font-size:29px; line-height:1.14; letter-spacing:-.01em}
+  display:flex; flex-direction:column; align-items:center; gap:6px; white-space:nowrap}
+/* la animación va en los hijos: .mk usa transform para posicionarse */
+.mk b{font-family:var(--f-disp); font-weight:900; font-size:29px; line-height:1.14;
+  letter-spacing:-.01em; opacity:0; transform:translateY(12px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+  transition-delay:var(--d,0s)}
 .mk .nd{width:28px; height:28px; display:grid; place-items:center}
 .mk .nd i{width:14px; height:14px; display:block; transform:rotate(45deg) scale(0);
   background:linear-gradient(148deg,var(--gold-hi),var(--bronze));
   box-shadow:0 0 0 6px var(--noir), 0 0 24px rgba(201,162,74,.6);
-  transition:transform .55s var(--ease); transition-delay:var(--d,.8s)}
-.is-active .mk .nd i{transform:rotate(45deg) scale(1)}
+  transition:transform .5s var(--ease); transition-delay:calc(var(--d,0s) + .12s)}
 .mk.big .nd i{width:26px; height:26px;
   box-shadow:0 0 0 6px var(--noir), 0 0 34px rgba(224,190,113,.85)}
 .mk em{font-style:normal; font-size:9px; letter-spacing:.18em; text-transform:uppercase;
-  color:var(--dim-2); font-weight:600}
+  color:var(--dim-2); font-weight:600; opacity:0; transform:translateY(-8px);
+  transition:opacity .55s var(--ease), transform .55s var(--ease);
+  transition-delay:calc(var(--d,0s) + .24s)}
 .mk.big em{color:var(--gold-2)}
+.is-active .mk b,.is-active .mk em{opacity:1; transform:none}
+.is-active .mk .nd i{transform:rotate(45deg) scale(1)}
 
 /* --- los ocho escenarios; el relleno del panel codifica la zona --- */
 .scns{display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:minmax(0,1fr);
-  gap:17px; flex:1; min-height:0; margin-top:10px}
-.scn{padding:16px 18px 15px; display:flex; flex-direction:column}
-.scn .hd{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+  gap:17px; flex:1; min-height:0; margin-top:6px}
+.scn{padding:13px 16px 12px; display:flex; flex-direction:column}
+.scn .hd{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
 .scn .hd .ico{color:var(--gold-2); width:26px; height:26px}
+.scn .dt2{display:flex; flex-direction:column; align-items:flex-end; gap:5px; min-width:0}
 .scn .yb{font-family:var(--f-disp); font-weight:700; font-size:13.5px; letter-spacing:.12em;
   color:#17100a; line-height:1; padding:5px 9px 4px;
   background:linear-gradient(148deg,var(--gold-2),var(--bronze))}
+.scn .mo{font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-2);
+  font-weight:700; line-height:1.2; text-align:right}
+.scn.deep .mo{color:var(--dim)}
 .scn .zn{font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold);
   font-weight:700; line-height:1.5; min-height:27px}
-.scn h4{margin:6px 0 0; font-family:var(--f-disp); font-weight:700; font-size:17.5px;
+.scn h4{margin:5px 0 0; font-family:var(--f-disp); font-weight:700; font-size:17px;
   line-height:1.2; letter-spacing:.015em; color:var(--gold-hi)}
-.scn .hr{width:30px; height:1px; margin:8px 0 8px;
+.scn .hr{width:30px; height:1px; margin:7px 0 7px;
   background:linear-gradient(90deg,var(--gold),transparent)}
-.scn p{margin:0; font-family:var(--f-serif); font-size:16.2px; line-height:1.33; color:var(--text)}
-.scn.copper .hd .ico,.scn.copper .zn{color:var(--copper-2)}
-.scn.copper .yb{background:linear-gradient(148deg,var(--copper-2),#8e2f18); color:#1c0c06}
-.scn.copper h4{color:var(--copper-hi)}
-.scn.copper .hr{background:linear-gradient(90deg,var(--copper-2),transparent)}
+.scn p{margin:0; font-family:var(--f-serif); font-size:15.8px; line-height:1.32; color:var(--text)}
 .scn.deep .hd .ico,.scn.deep .zn{color:var(--dim)}
 .scn.deep .yb{background:linear-gradient(148deg,var(--dim),#4a3f2c)}
 
-/* --- resumen: rango de años y lugares únicos por ciudad --- */
-.esc-sum{display:grid; grid-template-columns:auto 1px 1fr; gap:28px; align-items:center;
-  margin-top:12px; padding:10px 22px}
+/* --- resumen: solo los lugares únicos, agrupados por ciudad --- */
+.esc-sum{display:grid; grid-template-columns:auto 1px 1fr; gap:26px; align-items:center;
+  margin-top:9px; padding:7px 22px}
 .esc-sum .vr{align-self:stretch;
   background:linear-gradient(180deg,transparent,rgba(201,162,74,.32),transparent)}
 .sum-l{display:flex; flex-direction:column; gap:4px}
-.sum-l b{font-family:var(--f-disp); font-weight:900; font-size:26px; line-height:1.14; letter-spacing:.01em}
+.sum-l b{font-family:var(--f-disp); font-weight:900; font-size:25px; line-height:1.14; letter-spacing:.02em}
 .sum-l .meta{font-size:9px; letter-spacing:.17em; text-transform:uppercase;
   color:var(--dim-2); font-weight:600}
-.sum-r{display:grid; grid-template-columns:1.95fr 1fr; gap:24px}
-.sum-city .cn{display:flex; align-items:baseline; gap:9px; margin-bottom:4px}
+.sum-r{display:grid; grid-template-columns:2.1fr 1fr; gap:24px}
+.sum-city .cn{display:flex; align-items:baseline; gap:9px; margin-bottom:3px}
 .sum-city .cn span{font-size:9.5px; letter-spacing:.19em; text-transform:uppercase;
   color:var(--gold-2); font-weight:700}
 .sum-city .cn em{font-style:normal; font-size:8.5px; letter-spacing:.13em; text-transform:uppercase;
   color:#17100a; background:linear-gradient(148deg,var(--gold-2),var(--bronze));
   padding:3px 7px 2px; font-weight:700}
-.sum-city p{margin:0; font-family:var(--f-serif); font-size:15.6px; line-height:1.34; color:var(--text)}
-.sum-city.b .cn span{color:var(--copper-hi)}
-.sum-city.b .cn em{background:linear-gradient(148deg,var(--copper-2),#8e2f18); color:#1c0c06}
+.sum-city p{margin:0; font-family:var(--f-serif); font-size:15.4px; line-height:1.32; color:var(--text)}
+.sum-city p i{font-style:italic; color:var(--dim-2)}
+.sum-city.b .cn span{color:var(--cream)}
+.sum-city.b .cn em{background:linear-gradient(148deg,var(--dim),#4a3f2c); color:#17100a}
 
 /* ============================================================
    L05 MOTIVACIÓN
@@ -740,8 +751,8 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
         </article>
         <article class="panel deep" data-anim="up" style="--d:.34s">
           <span class="lb">NSE</span>
-          <span class="v">Alto</span>
-          <span class="meter" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="v nse">Media-alta</span>
+          <span class="meter" aria-label="Nivel socioeconómico medio-alto"><i></i><i></i><i></i><i></i></span>
         </article>
         <article class="panel deep" data-anim="up" style="--d:.41s">
           <span class="lb">Estudios</span>
@@ -810,117 +821,117 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
     </div>
 
     <div class="body">
-      <!-- eje temporal: 1945 - 1955, cada año en su posición real -->
-      <div class="axis-hd" data-anim="up" style="--d:.18s">
+      <!-- CUÁNDO · eje temporal, cada año en su posición real de la década -->
+      <div class="axis-hd" data-anim="up" style="--d:.16s">
         <span class="g"><svg class="ico"><use href="#i-calendar"/></svg><span class="lb">Cuándo</span></span>
         <span class="chip"><span class="dt"></span>1945 &ndash; 1955 · 10 años · 8 escenas</span>
       </div>
 
-      <div class="rail" data-anim="up" style="--d:.24s">
+      <div class="rail">
         <span class="line" aria-hidden="true"></span>
-        <span class="mk big" style="left:0%">
-          <b class="gold-text">1945</b><span class="nd"><i style="--d:.8s"></i></span><em>4 escenas</em></span>
-        <span class="mk" style="left:10%">
-          <b class="gold-text">1946</b><span class="nd"><i style="--d:.92s"></i></span><em>1 escena</em></span>
-        <span class="mk" style="left:50%">
-          <b class="gold-text">1950</b><span class="nd"><i style="--d:1.04s"></i></span><em>1 escena</em></span>
-        <span class="mk" style="left:90%">
-          <b class="gold-text">1954</b><span class="nd"><i style="--d:1.16s"></i></span><em>1 escena</em></span>
-        <span class="mk" style="left:100%">
-          <b class="gold-text">1955</b><span class="nd"><i style="--d:1.28s"></i></span><em>1 escena</em></span>
+        <span class="mk big" style="left:0%;--d:.55s">
+          <b class="gold-text">1945</b><span class="nd"><i></i></span><em>4 escenas</em></span>
+        <span class="mk" style="left:10%;--d:.72s">
+          <b class="gold-text">1946</b><span class="nd"><i></i></span><em>1 escena</em></span>
+        <span class="mk" style="left:50%;--d:.89s">
+          <b class="gold-text">1950</b><span class="nd"><i></i></span><em>1 escena</em></span>
+        <span class="mk" style="left:90%;--d:1.06s">
+          <b class="gold-text">1954</b><span class="nd"><i></i></span><em>1 escena</em></span>
+        <span class="mk" style="left:100%;--d:1.23s">
+          <b class="gold-text">1955</b><span class="nd"><i></i></span><em>1 escena</em></span>
       </div>
 
-      <!-- los ocho escenarios -->
+      <!-- DÓNDE · los ocho escenarios -->
       <div class="scns">
-        <article class="scn panel" data-anim="rise" style="--d:.34s">
+        <article class="scn panel" data-anim="rise" style="--d:.3s">
           <span class="shine"></span>
-          <div class="hd"><svg class="ico"><use href="#i-home"/></svg><span class="yb">1945</span></div>
-          <span class="zn">Nueva York · Long Island / Staten Island</span>
+          <div class="hd"><svg class="ico"><use href="#i-home"/></svg><span class="dt2"><span class="yb">1945</span><span class="mo">Agosto</span></span></div>
+          <span class="zn">Nueva York · Long Island</span>
           <h4>Mansión Corleone</h4>
           <span class="hr"></span>
-          <p>Kay asiste a la boda de Connie como la novia universitaria de Michael y conoce las historias de su familia.</p>
+          <p>Kay asiste a la boda de Connie como la novia de Michael y conoce las historias de su familia.</p>
         </article>
 
-        <article class="scn panel amber" data-anim="rise" style="--d:.4s">
+        <article class="scn panel amber" data-anim="rise" style="--d:.36s">
           <span class="shine"></span>
-          <div class="hd"><svg class="ico"><use href="#i-film"/></svg><span class="yb">1945</span></div>
+          <div class="hd"><svg class="ico"><use href="#i-film"/></svg><span class="dt2"><span class="yb">1945</span><span class="mo">Diciembre</span></span></div>
           <span class="zn">Nueva York · Manhattan</span>
           <h4>Teatro Radio City Music Hall</h4>
           <span class="hr"></span>
           <p>Kay y Michael salen de ver una película durante sus vacaciones de invierno.</p>
         </article>
 
-        <article class="scn panel amber" data-anim="rise" style="--d:.46s">
+        <article class="scn panel amber" data-anim="rise" style="--d:.42s">
           <span class="shine"></span>
-          <div class="hd"><svg class="ico"><use href="#i-bag"/></svg><span class="yb">1945</span></div>
+          <div class="hd"><svg class="ico"><use href="#i-bag"/></svg><span class="dt2"><span class="yb">1945</span><span class="mo">Diciembre</span></span></div>
           <span class="zn">Nueva York · Manhattan · Quinta Avenida</span>
-          <h4>Tienda Best &amp; Co.</h4>
+          <h4>Calles de Manhattan</h4>
           <span class="hr"></span>
-          <p>Mientras caminan con las compras navideñas, descubren en el periódico el atentado contra Don Vito.</p>
+          <p>Mientras caminan con compras navideñas, descubren en el periódico el atentado contra Don Vito.</p>
         </article>
 
-        <article class="scn panel amber" data-anim="rise" style="--d:.52s">
+        <article class="scn panel amber" data-anim="rise" style="--d:.48s">
           <span class="shine"></span>
-          <div class="hd"><svg class="ico"><use href="#i-phone"/></svg><span class="yb">1945</span></div>
+          <div class="hd"><svg class="ico"><use href="#i-phone"/></svg><span class="dt2"><span class="yb">1945</span><span class="mo">Diciembre</span></span></div>
           <span class="zn">Nueva York · Manhattan</span>
           <h4>Hotel St. Regis</h4>
           <span class="hr"></span>
-          <p>Michael llama a Kay por teléfono desde su habitación para despedirse antes de ir a proteger a su padre.</p>
+          <p>Michael llama a Kay por teléfono desde la habitación de ella para despedirse antes de ir al hospital.</p>
         </article>
 
-        <article class="scn panel" data-anim="rise" style="--d:.58s">
+        <article class="scn panel" data-anim="rise" style="--d:.54s">
           <span class="shine"></span>
-          <div class="hd"><svg class="ico"><use href="#i-gate"/></svg><span class="yb">1946</span></div>
-          <span class="zn">Nueva York · Long Island / Staten Island</span>
+          <div class="hd"><svg class="ico"><use href="#i-gate"/></svg><span class="dt2"><span class="yb">1946</span><span class="mo">Enero / Febrero</span></span></div>
+          <span class="zn">Nueva York · Long Island</span>
           <h4>Entrada de la Mansión Corleone</h4>
           <span class="hr"></span>
-          <p>Tras la huida de Michael a Sicilia, Kay intenta dejarle una carta a través de Tom Hagen, pero este la rechaza.</p>
+          <p>Tras la huida de Michael a Sicilia, Kay viaja a la casa familiar para intentar dejarle una carta con Tom Hagen.</p>
         </article>
 
-        <article class="scn panel copper" data-anim="rise" style="--d:.64s">
+        <article class="scn panel deep" data-anim="rise" style="--d:.6s">
           <span class="shine"></span>
-          <div class="hd"><svg class="ico"><use href="#i-teacher"/></svg><span class="yb">1950</span></div>
-          <span class="zn">Condado de Marin, California · Simulando Nueva Inglaterra</span>
-          <h4>Escuela Ross</h4>
+          <div class="hd"><svg class="ico"><use href="#i-teacher"/></svg><span class="dt2"><span class="yb">1950</span><span class="mo">Septiembre / Octubre · Otoño</span></span></div>
+          <span class="zn">Nueva Inglaterra · Noreste de EE. UU.</span>
+          <h4>Escuela del pueblo</h4>
           <span class="hr"></span>
-          <p>Michael reaparece tras su exilio y busca a Kay en su lugar de trabajo para pedirle que se casen.</p>
+          <p>Michael reaparece tras su exilio y busca a Kay en el colegio donde trabaja como maestra para pedirle matrimonio.</p>
         </article>
 
-        <article class="scn panel amber" data-anim="rise" style="--d:.7s">
+        <article class="scn panel amber" data-anim="rise" style="--d:.66s">
           <span class="shine"></span>
-          <div class="hd"><svg class="ico"><use href="#i-church"/></svg><span class="yb">1954</span></div>
+          <div class="hd"><svg class="ico"><use href="#i-church"/></svg><span class="dt2"><span class="yb">1954</span><span class="mo">Agosto / Septiembre</span></span></div>
           <span class="zn">Nueva York · Manhattan</span>
-          <h4>Antigua Catedral de San Patricio</h4>
+          <h4>Catedral de Nueva York</h4>
           <span class="hr"></span>
-          <p>Kay sostiene al bebé en el altar durante el bautizo, mientras los enemigos de Michael son ejecutados.</p>
+          <p>Kay asiste junto a Michael al bautizo del hijo de Connie mientras ocurre la masacre de los Dons rivales.</p>
         </article>
 
-        <article class="scn panel deep" data-anim="rise" style="--d:.76s">
+        <article class="scn panel" data-anim="rise" style="--d:.72s">
           <span class="shine"></span>
-          <div class="hd"><svg class="ico"><use href="#i-door"/></svg><span class="yb">1955</span></div>
-          <span class="zn">Nueva York · Estudios de filmación</span>
+          <div class="hd"><svg class="ico"><use href="#i-door"/></svg><span class="dt2"><span class="yb">1955</span><span class="mo">Febrero / Marzo</span></span></div>
+          <span class="zn">Nueva York · Long Island · Mansión Corleone</span>
           <h4>Despacho de Michael</h4>
           <span class="hr"></span>
-          <p>Michael le miente a Kay negando haber matado a Carlo, justo antes de que le cierren la puerta en la cara.</p>
+          <p>Kay confronta a Michael sobre el asesinato de Carlo, él le miente, y le cierran la puerta en la cara.</p>
         </article>
       </div>
 
-      <!-- resumen: rango y lugares únicos por ciudad -->
-      <div class="esc-sum panel deep" data-anim="up" style="--d:.84s">
+      <!-- resumen: lugares únicos por ciudad -->
+      <div class="esc-sum panel deep" data-anim="up" style="--d:.8s">
         <div class="sum-l">
-          <span class="lb">Dónde · resumen</span>
-          <b class="gold-text">1945 &rarr; 1955</b>
-          <span class="meta">10 años · 8 escenas · 7 lugares únicos</span>
+          <span class="lb">Dónde</span>
+          <b class="gold-text">Resumen</b>
+          <span class="meta">6 lugares únicos</span>
         </div>
         <span class="vr" aria-hidden="true"></span>
         <div class="sum-r">
           <div class="sum-city">
-            <span class="cn"><span>Nueva York</span><em>6 lugares</em></span>
-            <p>Mansión Corleone · Teatro Radio City Music Hall · Tienda Best &amp; Co. · Hotel St. Regis · Antigua Catedral de San Patricio · Despacho de Michael</p>
+            <span class="cn"><span>Nueva York</span><em>5 lugares</em></span>
+            <p>Mansión Corleone <i>(boda, entrada y despacho)</i> · Teatro Radio City Music Hall · Calles de Manhattan · Hotel St. Regis · Catedral de Nueva York</p>
           </div>
           <div class="sum-city b">
-            <span class="cn"><span>Condado de Marin, California</span><em>1 lugar</em></span>
-            <p>Escuela Ross</p>
+            <span class="cn"><span>Nueva Inglaterra</span><em>1 lugar</em></span>
+            <p>Escuela del pueblo</p>
           </div>
         </div>
       </div>
