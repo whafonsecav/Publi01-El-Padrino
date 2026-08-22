@@ -57,7 +57,7 @@ márgenes *Ninguno* y activar *Gráficos de fondo*.
 | # | Lámina | Contenido |
 | --- | --- | --- |
 | 01 | **Portada** | Título, personaje, institución, asignatura, modalidad e integrantes |
-| 02 | **Trama** | Línea de tiempo Intro · Nudo · Desenlace con las tres imágenes del personaje |
+| 02 | **Trama** | Línea de tiempo Intro · Nudo · Desenlace con las tres imágenes del personaje, y el tono desde el que se cuenta la historia |
 | 03 | **Personaje** | Demográficos (sexo, edad, NSE, estudios) + Actitudes/Opiniones + Intereses + Intenciones |
 | 04 | **Escenario** | Eje temporal proporcional (1945, 1946, 1950, 1954, 1955), los 8 escenarios con su año y zona, y resumen de lugares únicos por ciudad |
 | 05 | **Motivación** | Emociones · Sentimientos · Conflicto/Situación (tipo existencial) |

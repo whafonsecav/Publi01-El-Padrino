@@ -242,7 +242,7 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
    L02 TRAMA
    ============================================================ */
 #s2 .body{padding:0}
-.tri{display:grid; grid-template-columns:repeat(3,1fr); gap:3px; height:294px;
+.tri{display:grid; grid-template-columns:repeat(3,1fr); gap:3px; height:262px;
   background:rgba(201,162,74,.34)}
 .tri-cell{position:relative; overflow:hidden; background:var(--noir)}
 .tri-cell img{width:100%; height:100%; object-fit:cover; object-position:50% 12%;
@@ -251,13 +251,13 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 .tri-cell::after{content:''; position:absolute; inset:auto 0 0 0; height:44%;
   background:linear-gradient(180deg,transparent,rgba(5,4,3,.52) 62%,rgba(5,4,3,.94) 100%)}
 
-.tl{position:relative; height:42px; margin:0 84px}
-.tl .track{position:absolute; left:0; right:0; top:20px; height:1px;
+.tl{position:relative; height:34px; margin:0 84px}
+.tl .track{position:absolute; left:0; right:0; top:16px; height:1px;
   background:linear-gradient(90deg,transparent,rgba(201,162,74,.6) 7%,rgba(201,162,74,.6) 93%,transparent);
   transform:scaleX(0); transform-origin:center; transition:transform 1.3s var(--ease); transition-delay:.5s}
 .is-active .tl .track{transform:scaleX(1)}
 .tl .nodes{position:absolute; inset:0; display:grid; grid-template-columns:repeat(3,1fr)}
-.tl .nd{display:flex; justify-content:center; align-items:flex-start; padding-top:12px}
+.tl .nd{display:flex; justify-content:center; align-items:flex-start; padding-top:8px}
 .tl .nd i{width:17px; height:17px; display:block; transform:rotate(45deg) scale(0);
   background:linear-gradient(148deg,var(--gold-hi),var(--bronze));
   box-shadow:0 0 0 7px var(--noir), 0 0 30px rgba(201,162,74,.6);
@@ -269,13 +269,26 @@ body{margin:0; background:#000; color:var(--text); font-family:var(--f-ui);
 
 .acts{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin:0 84px;
   flex:1; min-height:0; padding-bottom:4px}
-.acts .panel{padding:24px 28px 26px; display:flex; flex-direction:column}
-.act-hd{display:flex; align-items:baseline; gap:15px; margin-bottom:14px}
+.acts .panel{padding:22px 26px 22px; display:flex; flex-direction:column}
+.act-hd{display:flex; align-items:baseline; gap:14px; margin-bottom:12px}
 .act-hd .n{font-family:var(--f-disp); font-weight:900; font-size:25px; line-height:1;
   color:rgba(224,190,113,.42)}
-.act-hd h3{margin:0; font-family:var(--f-disp); font-weight:800; font-size:40px;
+.act-hd h3{margin:0; font-family:var(--f-disp); font-weight:800; font-size:36px;
   line-height:1; letter-spacing:.08em}
 .acts p{margin:0; font-family:var(--f-serif); font-size:20px; line-height:1.42; color:var(--text)}
+
+/* tarjeta de tono: cruza a lo ancho, del intro al desenlace */
+.tono{display:grid; grid-template-columns:auto 1px 1fr; gap:26px; align-items:center;
+  margin:14px 84px 0; padding:14px 26px}
+.tono .vr{align-self:stretch;
+  background:linear-gradient(180deg,transparent,rgba(201,162,74,.34),transparent)}
+/* el panel es bajo: el resplandor se ajusta para no barrerlo entero */
+.tono .shine{width:150px; height:150px; right:-58px; top:-58px}
+.tono-l{display:flex; flex-direction:column; gap:6px}
+.tono-l b{font-family:var(--f-disp); font-weight:900; font-size:28px; line-height:1.1;
+  letter-spacing:.03em; white-space:nowrap}
+.tono p{margin:0; font-family:var(--f-serif); font-size:18px; line-height:1.42; color:var(--text)}
+.tono p em{font-style:italic; color:var(--gold-2)}
 
 /* ============================================================
    L03 PERSONAJE
@@ -706,6 +719,17 @@ body.hide-cursor, body.hide-cursor *{cursor:none !important}
           <p>Luego de una larga espera, su amado regresa, y a pesar de su dolor por el abandono, lo perdona, se casan, forman un hogar y ella acepta que su esposo ya no es el mismo hombre del que se enamoró al inicio y asume que ahora es el nuevo líder de la mafia.</p>
         </article>
       </div>
+
+      <!-- TONO · desde dónde se cuenta la historia -->
+      <article class="tono panel amber" data-anim="up" style="--d:1.02s">
+        <span class="shine"></span>
+        <div class="tono-l">
+          <span class="lb">Tono del relato</span>
+          <b class="gold-text">COMPLACIENTE</b>
+        </div>
+        <span class="vr" aria-hidden="true"></span>
+        <p>En cada giro Kay renuncia a lo suyo &mdash;sus planes, su criterio, su derecho a la verdad&mdash; para sostener la versión de Michael: acepta el <em>«es mi familia, no yo»</em>, espera más de un año sin explicaciones, se casa con quien la abandonó y recibe con alivio su mentira final. El relato no la usa para juzgarlo, sino para concederle la razón.</p>
+      </article>
     </div>
 
     <div class="foot">
